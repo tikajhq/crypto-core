@@ -1,0 +1,24 @@
+{
+  "name": "tikcc-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha \"./modules/**/test.js\"",
+    "start": "node server.js",
+    "doc": "apidoc -i modules/ -o dev/docs"
+  },
+  "author": "Madhurendra Sachan <madhurendra@tikaj.com>",
+  "license": "ISC",
+  "dependencies": {
+    "coininfo": "^2.2.0",
+    "coinkey": "^2.0.0",
+    "express": "^4.16.2",
+    "mocha-each": "^1.1.0",
+    "ripple-lib": "^0.17.9"
+  },
+  "devDependencies": {
+    "apidoc": "^0.17.6",
+    "mocha": "^4.1.0"
+  }
+}
