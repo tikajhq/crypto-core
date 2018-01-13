@@ -1,35 +1,6 @@
-const path = require("path");
+const CS = require("./CurrencyService");
 
-const AVAILABLE_CURRENCIES = [
-    "xrp"
-];
-
-/*
- * This code is for initialization & setup.
- *  This needs to be moved somewhere clean
- */
-let currenciesInfo = {};
-let instances = {};
-
-function onNewTx(tx, raw) {
-    console.log(tx);
-}
-
-(function init() {
-    AVAILABLE_CURRENCIES.forEach((currencyName) => {
-        let Currency = require(path.join(__dirname, currencyName));
-        let currency = new Currency({}, () => {
-            //setup basic info for API
-            currenciesInfo[currencyName] = {"address": currency.primaryWallet.address};
-            currency.listenForIncomingTX();
-        });
-        currency.on("incomingTX", onNewTx);
-
-        instances[currencyName] = currency;
-    })
-})();
-
-
+CS.init();
 /**
  * @api {get} /currencies/list List currencies
  * @apiGroup Currency
@@ -48,7 +19,7 @@ function onNewTx(tx, raw) {
  }
  */
 exports.list_all = function (req, res) {
-    res.json({data: currenciesInfo})
+    res.json({data: CS.currenciesInfo})
 };
 
 /**
@@ -70,7 +41,7 @@ exports.list_all = function (req, res) {
 exports.send = function (req, res) {
 
     let currencyName = req.params.currency;
-    if (!currencyName || AVAILABLE_CURRENCIES.indexOf(currencyName) === -1)
+    if (!currencyName || CS.AVAILABLE_CURRENCIES.indexOf(currencyName) === -1)
         return res.status(500).send({error: "Unsupported currency requested."});
 
     let to = req.query['to'];
@@ -84,7 +55,7 @@ exports.send = function (req, res) {
     //TODO: valid error message instead of exception
     let amount = parseFloat(req.query['amount']);
 
-    let currency = instances[currencyName];
+    let currency = CS.getInstance(currencyName);
     currency.send(to, amount, (err, success) => {
         if (err)
             return res.status(500).send({error: "error in sending amount.", ref: err});
@@ -110,8 +81,8 @@ exports.send = function (req, res) {
  */
 exports.getWallet = function (req, res) {
     let currencyName = req.params.currency;
-    if (!currencyName || AVAILABLE_CURRENCIES.indexOf(currencyName) === -1)
+    if (!currencyName || CS.AVAILABLE_CURRENCIES.indexOf(currencyName) === -1)
         return res.status(500).send({error: "Unsupported currency requested."});
-    let currency = instances[currencyName];
+    let currency = CS.getInstance(currencyName);
     return res.json({data: currency.generateWallet()})
 };
