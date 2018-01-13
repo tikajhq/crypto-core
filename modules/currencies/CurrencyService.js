@@ -8,8 +8,6 @@ const AVAILABLE_CURRENCIES = [
 
 let Currencies = {
     instances: {},
-    currenciesInfo: {},
-
     onNewTx: function (tx, raw) {
         console.log(tx);
     },
@@ -20,7 +18,7 @@ let Currencies = {
             let Currency = require(path.join(__dirname, currencyName));
             let currency = new Currency({}, () => {
                 //setup basic info for API
-                this.currenciesInfo[currencyName] = {"address": currency.primaryWallet.address};
+                // this.currenciesInfo[currencyName] = {"address": currency.primaryWallet.address};
                 currency.listenForIncomingTX();
             });
             currency.on("incomingTX", this.onNewTx);
@@ -49,14 +47,35 @@ let RefreshService = {
     APIEndpoint: "https://api.coinmarketcap.com/v1/ticker/",
     REFRESH_INTERVAL: 5 * 60 * 1000,
     ratesData: {},
+    enabledRates: {},
     updateRates: function () {
+        console.log("Syncing rates...");
         rp(this.APIEndpoint + "?limit=" + this.CURRENCY_LIMITS + "&convert=inr")
             .then((data) => {
-                data.forEach((item) => {
-                    this.ratesData[item.symbol.toLowerCase()] = item;
+                console.log("Pulled.");
+                //todo: save in db.
+                JSON.parse(data).forEach((item) => {
+                    let cur = item.symbol.toLowerCase();
+                    this.ratesData[cur] = item;
+                    if (AVAILABLE_CURRENCIES.indexOf(cur) !== -1) {
+                        // Create object for all enabled.
+
+                        this.enabledRates[cur] = {
+                            name: item.name,
+                            symbol: item.symbol,
+                            rates: {
+                                tik: item.price_inr,
+                                usd: item.price_usd,
+                                btc: item.price_btc,
+                            },
+                            last_updated: item.last_updated,
+                            address: Currencies.getInstance(cur).primaryWallet.address
+                        }
+                    }
                 })
             })
             .catch(function (err) {
+                console.log(err);
                 // Crawling failed...
                 // ignore for now.
             });
@@ -65,10 +84,15 @@ let RefreshService = {
     init: function () {
         this.updateRates();
         setInterval(this.updateRates, this.REFRESH_INTERVAL);
+    },
+
+    getRates: function () {
+        return this.enabledRates;
     }
 
 };
 RefreshService.updateRates = RefreshService.updateRates.bind(RefreshService);
+RefreshService.getRates = RefreshService.getRates.bind(RefreshService);
 
 
 exports.init = function () {
@@ -80,3 +104,4 @@ exports.init = function () {
 exports.AVAILABLE_CURRENCIES = AVAILABLE_CURRENCIES;
 exports.getInstance = Currencies.getInstance;
 exports.currenciesInfo = Currencies.currenciesInfo;
+exports.getRates = RefreshService.getRates;

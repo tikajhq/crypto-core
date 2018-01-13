@@ -19,7 +19,7 @@ CS.init();
  }
  */
 exports.list_all = function (req, res) {
-    res.json({data: CS.currenciesInfo})
+    res.json({data: CS.getRates()})
 };
 
 /**
