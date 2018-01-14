@@ -36,6 +36,7 @@ class Ripple extends Currency {
                 let tx = t.transaction;
                 if (watchAddresses.indexOf(tx.Destination) !== -1) {
                     let newTx = {
+                        id: tx.hash,
                         from: tx.Account,
                         amount: parseFloat(tx.Amount) / 100000,
                         to: tx.Destination,
@@ -105,6 +106,7 @@ class Ripple extends Currency {
             }
         };
         console.log(payment);
+        this.logTX(payment);
         //TODO: LOG
         return api.preparePayment(source.address, payment, instructions).then(prepared => {
             console.log('Payment transaction prepared...');
@@ -118,6 +120,8 @@ class Ripple extends Currency {
                 //TODO: LOG
                 cb(err, null);
             });
+        }).reject((message) => {
+            console.log(message)
         });
     }
 }
