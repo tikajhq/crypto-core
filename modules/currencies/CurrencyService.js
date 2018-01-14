@@ -1,6 +1,7 @@
 const path = require("path");
 let rp = require('request-promise');
 
+
 const AVAILABLE_CURRENCIES = [
     "xrp"
 ];
@@ -9,7 +10,17 @@ const AVAILABLE_CURRENCIES = [
 let Currencies = {
     instances: {},
     onNewTx: function (tx, raw) {
-        console.log(tx);
+        console.log(raw);
+        global.DB.collection('incomingtx').insert({tx, raw});
+        rp.post(CONFIG.TX_ENDPOINT + "id=" + tx.id + "&currency=" + tx.currency + "&address=" + tx.from + "&units=" + tx.amount, {
+            form: {
+                tx: JSON.stringify(tx),
+                raw: JSON.stringify(raw)
+            }
+        })
+            .then(data => {
+                console.log(data);
+            }).catch(console.log);
     },
 
     init: function () {
@@ -29,7 +40,6 @@ let Currencies = {
     getInstance: function (currencyName) {
         if (!currencyName || AVAILABLE_CURRENCIES.indexOf(currencyName) === -1)
             return null;
-        console.log(this);
         return this.instances[currencyName];
     }
 
@@ -54,11 +64,17 @@ let RefreshService = {
             .then((data) => {
                 console.log("Pulled.");
                 //todo: save in db.
-                JSON.parse(data).forEach((item) => {
+                data = JSON.parse(data);
+                DB.collection('rates').insert({data, timestamp: +(new Date())});
+                data.forEach((item) => {
                     let cur = item.symbol.toLowerCase();
                     this.ratesData[cur] = item;
-                    if (AVAILABLE_CURRENCIES.indexOf(cur) !== -1) {
+                    if (AVAILABLE_CURRENCIES.indexOf(cur) !== -1 || ['xrp', 'btc', 'doge', 'ltc', 'eth'].indexOf(cur) !== -1) {
                         // Create object for all enabled.
+                        let instance = Currencies.getInstance(cur);
+                        let address = '';
+                        if (instance)
+                            address = instance.primaryWallet.address;
 
                         this.enabledRates[cur] = {
                             name: item.name,
@@ -68,8 +84,13 @@ let RefreshService = {
                                 usd: item.price_usd,
                                 btc: item.price_btc,
                             },
+                            changes: {
+                                h1: item.percent_change_1h,
+                                h24: item.percent_change_24h,
+                                d7: item.percent_change_7d,
+                            },
                             last_updated: item.last_updated,
-                            address: Currencies.getInstance(cur).primaryWallet.address
+                            address: address
                         }
                     }
                 })
