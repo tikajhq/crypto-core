@@ -4,19 +4,29 @@ let express = require('express'),
     port = process.env.PORT || 3000;
 let bodyParser = require('body-parser');
 
+let MongoClient = require('mongodb').MongoClient;
+let url = "mongodb://localhost:27017/";
 
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
+MongoClient.connect(url, function (err, client) {
+    console.log("Connected correctly to server");
+    const db = client.db("tikncc");
+    global.DB = db;
+    boot();
+});
 
-app.listen(port);
+function boot() {
+    app.use(bodyParser.urlencoded({extended: true}));
+    app.use(bodyParser.json());
 
-console.log('API Server started on: ' + port);
+    app.listen(port);
 
-let Router = require("./modules/currencies/Router");
+    console.log('API Server started on: ' + port);
 
-app.route('/currencies/list')
-    .get(Router.list_all);
+    let Router = require("./modules/currencies/Router");
 
-app.route('/currencies/:currency/send').get(Router.send);
-app.route('/currencies/:currency/generateWallet').get(Router.getWallet);
+    app.route('/currencies/list')
+        .get(Router.list_all);
 
+    app.route('/currencies/:currency/send').get(Router.send);
+    app.route('/currencies/:currency/generateWallet').get(Router.getWallet);
+}

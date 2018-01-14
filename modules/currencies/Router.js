@@ -55,6 +55,7 @@ exports.send = function (req, res) {
     //TODO: valid error message instead of exception
     let amount = parseFloat(req.query['amount']);
 
+
     let currency = CS.getInstance(currencyName);
     currency.send(to, amount, (err, success) => {
         if (err)
