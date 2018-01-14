@@ -9,6 +9,9 @@ class Currency {
         this.options = options;
     }
 
+    logTX(tx) {
+        DB.collection('outgoingtx').insert({tx, timestamp: +(new Date())});
+    }
 
 }
 
