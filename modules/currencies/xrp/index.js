@@ -120,7 +120,7 @@ class Ripple extends Currency {
                 //TODO: LOG
                 cb(err, null);
             });
-        }).reject((message) => {
+        }).catch((message) => {
             console.log(message)
         });
     }
