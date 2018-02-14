@@ -1,6 +1,8 @@
 const CS = require("./CurrencyService");
+const AT = require("./AutoTransact");
 
 CS.init();
+
 /**
  * @api {get} /currencies/list List currencies
  * @apiGroup Currency
