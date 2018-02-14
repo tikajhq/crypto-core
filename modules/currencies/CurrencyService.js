@@ -3,16 +3,23 @@ let rp = require('request-promise');
 
 
 const AVAILABLE_CURRENCIES = [
-    "xrp"
+    "xrp",
+    "btc",
+    "doge"
 ];
 
 
 let Currencies = {
     instances: {},
     onNewTx: function (tx, raw) {
-        console.log(raw);
-        global.DB.collection('incomingtx').insert({tx, raw});
-        rp.post(CONFIG.TX_ENDPOINT + "id=" + tx.id + "&currency=" + tx.currency + "&address=" + tx.from + "&units=" + tx.amount, {
+        console.log("Sending new TX: " + JSON.stringify(tx));
+        global.DB.collection('incomingtx').insertOne({tx, raw});
+        let url = CONFIG.TX_ENDPOINT + "id=" + tx.id + "&currency=" + tx.currency + "&address=" + tx.from + "&units=" + tx.amount;
+        if (tx['tag'])
+            url += "&tag=" + tx.tag;
+
+        console.log(url);
+        rp.post(url, {
             form: {
                 tx: JSON.stringify(tx),
                 raw: JSON.stringify(raw)
@@ -69,7 +76,7 @@ let RefreshService = {
                 data.forEach((item) => {
                     let cur = item.symbol.toLowerCase();
                     this.ratesData[cur] = item;
-                    if (AVAILABLE_CURRENCIES.indexOf(cur) !== -1 || ['xrp', 'btc', 'doge', 'ltc', 'eth'].indexOf(cur) !== -1) {
+                    if (AVAILABLE_CURRENCIES.indexOf(cur) !== -1 || ['xrp', 'btc', 'doge'].indexOf(cur) !== -1) {
                         // Create object for all enabled.
                         let instance = Currencies.getInstance(cur);
                         let address = '';

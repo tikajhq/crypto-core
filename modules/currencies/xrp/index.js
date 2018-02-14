@@ -41,11 +41,13 @@ class Ripple extends Currency {
                         amount: parseFloat(tx.Amount) / 100000,
                         to: tx.Destination,
                         currency: this.notation,
-                        time: +(new Date())
+                        time: +(new Date()),
+                        tag: tx.DestinationTag
                     };
                     console.log("============================================");
                     console.log("==========Received XRP =====================");
                     console.log("============================================");
+                    console.log(tx);
                     console.log(newTx);
                     this.emit("incomingTX", newTx, t);
                 }
@@ -74,15 +76,28 @@ class Ripple extends Currency {
 
     }
 
-
     generateWallet() {
         //TODO: LOG
         return this.api.generateAddress();
     }
 
+    getFrom(from, value, cb) {
+        return this.api.getFee().then(fee => {
+            fee = fee * 1.01;
+            return this.transfer(from, this.primaryWallet.address, value - fee, cb);
+        }).catch(cb)
+    }
+
     send(to, value, cb) {
         //TODO: LOG
         return this.transfer(this.primaryWallet, to, value, cb);
+    }
+
+    getBalance(walletAddress, cb) {
+        return this.api.getAccountInfo(walletAddress).then(info => {
+            cb(null, info.xrpBalance)
+        }).catch(cb);
+
     }
 
     transfer(source, destination, value, cb) {
@@ -119,7 +134,10 @@ class Ripple extends Currency {
             }, (err) => {
                 //TODO: LOG
                 cb(err, null);
+            }).catch((message) => {
+                console.log(message)
             });
+            cb(null, null)
         }).catch((message) => {
             console.log(message)
         });
