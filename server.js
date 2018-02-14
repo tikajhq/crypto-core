@@ -8,6 +8,7 @@ let MongoClient = require('mongodb').MongoClient;
 let url = "mongodb://localhost:27017/";
 
 MongoClient.connect(url, function (err, client) {
+    global.MongoClient = client;
     console.log("Connected correctly to server");
     const db = client.db("tikncc");
     global.DB = db;
