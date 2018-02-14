@@ -11,11 +11,19 @@
   "author": "Madhurendra Sachan <madhurendra@tikaj.com>",
   "license": "ISC",
   "dependencies": {
+    "bitcoin-core": "^2.0.0",
+    "bitcoind-rpc": "^0.7.1",
+    "bitcoinjs-lib": "^3.3.2",
     "coininfo": "^2.2.0",
     "coinkey": "^2.0.0",
     "express": "^4.16.2",
     "mocha-each": "^1.1.0",
-    "ripple-lib": "^0.17.9"
+    "mongodb": "^3.0.2",
+    "node-dogecoin": "^0.3.9",
+    "request": "^2.83.0",
+    "request-promise": "^4.2.2",
+    "ripple-lib": "^0.17.9",
+    "ws": "^4.0.0"
   },
   "devDependencies": {
     "apidoc": "^0.17.6",
