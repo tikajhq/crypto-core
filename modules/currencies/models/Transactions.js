@@ -1,25 +1,19 @@
-const db = global.MongoClient.db("tikcc");
+const db = global.MongoClient.db(CONFIG.DATABASE_SYSTEM);
 
-let collection = db.collection('wallets');
+let collection = db.collection(CONFIG.RAW_TX_COLLECTION);
 
 module.exports = {
     getAll: (cb) => {
         return this.getBy({}, cb);
     },
-    getBy: (filter, cb) => {
-        collection.find(filter).toArray((err, wallets) => {
+    getBy: (filter, columns, cb) => {
+        collection.find(filter, columns).toArray((err, wallets) => {
             cb(wallets)
         })
     },
-
-    setBalance: (address, amount) => {
-        collection.updateOne({address: address}, {$set: {"meta.balance": amount}}, {upsert: true});
-    },
-
     addTXCache: (txs, cb) => {
         let toLook = txs.map(i => i._id);
-
-        global.DB.collection("rawtx").find({"_id": {"$in": toLook}}, {"_id": 1}).toArray((err, ids) => {
+        collection.find({"_id": {"$in": toLook}}, {"_id": 1}).toArray((err, ids) => {
             let exist = ids.map(i => i._id);
             let notExist = [];
 
@@ -29,7 +23,7 @@ module.exports = {
             });
             cb(notExist);
             if (notExist.length) {
-                global.DB.collection("rawtx").insertMany(txs, {ordered: false}, () => {
+                collection.insertMany(txs, {ordered: false}, () => {
                 })
             }
         })
