@@ -1,10 +1,10 @@
 const Currency = require("./../../base/bitcoin/BTCCurrency");
 const RPCService = require("./../../base/bitcoin/RPCService");
 
-class DASH extends Currency {
+
+class QTUM extends Currency {
     constructor(options, cb) {
-        super("dash");
-        this.divisionFactor = 1;
+        super("qtum");
         this.api = new RPCService({
             currency: this.notation,
             rpcConfig: {
@@ -12,11 +12,15 @@ class DASH extends Currency {
                 user: this.notation,
                 pass: 's3cur3',
                 host: this.CurrencyConfig.core,
-                port: '9998',
+                port: '3889',
             }
         }, cb);
+    }
+
+    transfer(source, destination, value, cb) {
+
     }
 }
 
 
-module.exports = DASH;
+module.exports = QTUM;
