@@ -1,0 +1,73 @@
+<style>
+
+
+    .record > .data {
+        -moz-transition: all .2s ease-in;
+        -o-transition: all .2s ease-in;
+        -webkit-transition: all .2s ease-in;
+        transition: all .2s ease-in;
+    }
+
+    .record:nth-child(even) > .data {
+        background: #c4e3f3
+    }
+
+    .record:nth-child(odd) > .data {
+        background: #f2dede
+    }
+
+    .record .data:hover {
+        background: rgb(229, 229, 229);
+        color: #000000;
+    }
+
+    pre {
+        font-family: monospace;
+        font-size: 13px;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: 400;
+        line-height: 18.5714px;
+        padding: 5px;
+    }
+
+</style>
+
+<form action="" id="form_content">
+    <input id="type" value="subscribe" placeholder="event"/>
+    <input id="data" value='{"event": "incoming_tx", "currency": "doge"}'
+           placeholder='{"event": "incoming_tx", "currency": "doge"}' style="width: 50%;"/>
+    <button id="send">Send</button>
+</form>
+<div id="container">
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script>
+    var ws = new WebSocket('ws://localhost:40510');
+
+    function send(type, params) {
+        return ws.send(JSON.stringify({type: type, params: params}))
+    }
+
+    // event emmited when connected
+    ws.onopen = function () {
+        console.log('websocket is connected ...');
+        // sending a send event to websocket server
+
+    };
+
+    var $container = $("#container");
+    // event emmited when receiving message
+    ws.onmessage = function (ev) {
+        $("<div class='record'><div class='data'><pre>" + JSON.stringify(JSON.parse(ev.data), null, 2) + "</pre></div></div>").hide().prependTo($container).slideToggle();
+    };
+
+    $(document).on('click', '#send', function (e) {
+        // this will prevent form and reload page on submit.
+        e.preventDefault();
+        send($("#type").val().trim(), JSON.parse($("#data").val().trim()))
+    });
+</script>
