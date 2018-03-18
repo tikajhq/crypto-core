@@ -40,11 +40,11 @@ function boot() {
     Currencies.init(CONFIG.AVAILABLE_CURRENCIES);
     Rates.init(CONFIG.AVAILABLE_CURRENCIES);
 
-    app.route('/currencies/list')
+    app.route('/api/currencies/list')
         .get(Router.list_all);
 
-    app.route('/currencies/:currency/send').get(Router.send);
-    app.route('/currencies/:currency/generateWallet').get(Router.getWallet);
+    app.route('/api/currencies/:currency/send').get(Router.send);
+    app.route('/api/currencies/:currency/generateWallet').get(Router.getWallet);
 
     app.use(express.static('www'))
 }
