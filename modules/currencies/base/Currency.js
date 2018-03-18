@@ -1,35 +1,15 @@
 let util = require('util'),
     EventEmitter = require('events').EventEmitter;
 
-
 const HEALTH_CHECK_INTERVAL = 30 * 1000;
-
-/**
- * Format of a TX
- * {
- *  txid:"",
- *  currency:"",
- *  timestamp:{
- *   created:"",
- *  }
- *  from:[
- *   { address:"", units:"" }
- *  ],
- *  to:[
- *  { address:"",units:""}
- *  ]
- *
- * }
- */
 
 class Currency {
 
     constructor(notation, options) {
         this.notation = notation;
         this.options = options;
-        this.ACTUAL_TRANSFER = true;
-        this.watchAddressesObject = {};
-        this.watchAddresses = [];
+        this.ACTUAL_TRANSFER = false;
+        this.watchAddresses = {};
         this.tickIncomingCounter = 0;
 
         this.CurrencyConfig = CONFIG.currencies[notation];
@@ -54,24 +34,23 @@ class Currency {
 
     _syncWatchAddressList() {
         //add primary wallet to list.
-        this.watchAddressesObject[this.primaryWallet] = 1;
-        this.watchAddresses = Object.keys(this.watchAddressesObject);
+        this.watchAddresses[this.primaryWallet] = 1;
     }
 
     setWatchAddresses(addressList) {
-        this.watchAddressesObject = {};
+        this.watchAddresses = {};
         this.addWatchAddresses(addressList);
     }
 
     addWatchAddresses(addressList) {
         if (typeof addressList === "string")
             addressList = [addressList];
-        addressList.forEach((address) => this.watchAddressesObject[address] = 1);
+        addressList.forEach((address) => this.watchAddresses[address] = 1);
         this._syncWatchAddressList();
     }
 
     removeWatchAddress(address) {
-        delete this.watchAddressesObject[address];
+        delete this.watchAddresses[address];
         this._syncWatchAddressList();
     }
 
@@ -82,6 +61,20 @@ class Currency {
     onUTXO(tx, rawtx) {
         this.emit("incoming_tx", tx, rawtx);
         this.tickIncomingCounter++;
+        if (tx.to) {
+            //check for all to
+            for (let i = 0; i < tx.to.length; ++i) {
+                if (tx.to[i].addresses) {
+                    //iterate over each address in addresses
+                    //normally it is just 1 address.
+                    for (let j = 0; j < tx.to[i].addresses.length; ++j) {
+                        //check if it is in watch list or not.
+                        if (this.watchAddresses[tx.to[i].addresses[j]])
+                            return this.waitForConfirmation(tx, rawtx)
+                    }
+                }
+            }
+        }
     }
 
     waitForConfirmation(tx, rawtx) {
@@ -111,7 +104,7 @@ class Currency {
 
     send(to, value, cb, tag) {
         logger.info("Send", {to, value, cb, tag});
-        return this.transfer(this.primaryWallet, to, value, cb, tag);
+        return this.transfer({source: this.primaryWallet, destination: to, value}, cb);
     }
 
 

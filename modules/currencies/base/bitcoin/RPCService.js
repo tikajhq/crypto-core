@@ -181,7 +181,7 @@ class RPCService extends EventEmitter {
      * calls onNewConfirmedTX if any transaction from confirmationTransactionsCache has counts more than MIN_CONFIRMATION_COUNT
      */
     confirmationService() {
-        logger.debug("Watching addresses for confirmations ");
+        logger.debug("Watching TXIDS for confirmations ");
         logger.debug(Object.keys(this.confirmationTransactionsCache).slice(0, 6));
         this.getRawTX(Object.keys(this.confirmationTransactionsCache), (err, transactions) => {
             transactions.forEach(transaction => {
