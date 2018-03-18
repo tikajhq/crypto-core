@@ -1,4 +1,5 @@
-global.CONFIG = require("./constants");
+require("./boot");
+let rp = require('request-promise');
 let express = require('express'),
     app = express(),
     port = process.env.PORT || 3000;
@@ -15,6 +16,15 @@ MongoClient.connect(url, function (err, client) {
     boot();
 });
 
+function pollCrons() {
+    rp.get(CONFIG.REFRESH_ENDPOINTS, {})
+        .then(data => {
+            // console.log("DONE");
+        }).catch(console.log);
+}
+
+setInterval(pollCrons, 1000 * 15);
+
 function boot() {
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(bodyParser.json());
@@ -24,10 +34,17 @@ function boot() {
     console.log('API Server started on: ' + port);
 
     let Router = require("./modules/currencies/Router");
+    const wsAPI = require("./modules/currencies/services/WebsocketAPI");
+    const Currencies = require("./modules/currencies/services/Currencies");
+    const Rates = require("./modules/currencies/services/RateSync");
+    Currencies.init(CONFIG.AVAILABLE_CURRENCIES);
+    Rates.init(CONFIG.AVAILABLE_CURRENCIES);
 
     app.route('/currencies/list')
         .get(Router.list_all);
 
     app.route('/currencies/:currency/send').get(Router.send);
     app.route('/currencies/:currency/generateWallet').get(Router.getWallet);
+
+    app.use(express.static('www'))
 }
