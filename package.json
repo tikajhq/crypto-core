@@ -14,7 +14,7 @@
     "bitcoin-core": "^2.0.0",
     "bitcoind-rpc": "^0.7.1",
     "bitcoinjs-lib": "^3.3.2",
-    "coininfo": "^2.2.0",
+    "coininfo": "git+https://github.com/cryptocoinjs/coininfo.git",
     "coinkey": "^2.0.0",
     "express": "^4.16.2",
     "mocha-each": "^1.1.0",
