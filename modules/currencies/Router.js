@@ -1,7 +1,5 @@
-const CS = require("./CurrencyService");
-const AT = require("./AutoTransact");
-
-CS.init();
+const Currencies = require("./services/Currencies");
+const Rates = require("./services/RateSync");
 
 /**
  * @api {get} /currencies/list List currencies
@@ -21,7 +19,7 @@ CS.init();
  }
  */
 exports.list_all = function (req, res) {
-    res.json({data: CS.getRates()})
+    res.json({data: Rates.getRates()})
 };
 
 /**
@@ -43,7 +41,7 @@ exports.list_all = function (req, res) {
 exports.send = function (req, res) {
 
     let currencyName = req.params.currency;
-    if (!currencyName || CS.AVAILABLE_CURRENCIES.indexOf(currencyName) === -1)
+    if (!currencyName || CONFIG.AVAILABLE_CURRENCIES.indexOf(currencyName) === -1)
         return res.status(500).send({error: "Unsupported currency requested."});
 
     let to = req.query['to'];
@@ -53,17 +51,20 @@ exports.send = function (req, res) {
     if (!req.query['amount'])
         return res.status(500).send({error: "`amount` is missing."});
 
+    // if (!req.query['tag'])
+    //     return res.status(500).send({error: "`tag` is missing."});
+
     //this should raise exception,
     //TODO: valid error message instead of exception
     let amount = parseFloat(req.query['amount']);
 
 
-    let currency = CS.getInstance(currencyName);
+    let currency = Currencies.getInstance(currencyName);
     currency.send(to, amount, (err, success) => {
         if (err)
             return res.status(500).send({error: "error in sending amount.", ref: err});
         return res.json({data: success});
-    });
+    }, req.query['tag']);
 };
 
 
@@ -84,8 +85,8 @@ exports.send = function (req, res) {
  */
 exports.getWallet = function (req, res) {
     let currencyName = req.params.currency;
-    if (!currencyName || CS.AVAILABLE_CURRENCIES.indexOf(currencyName) === -1)
+    if (!currencyName || CONFIG.AVAILABLE_CURRENCIES.indexOf(currencyName) === -1)
         return res.status(500).send({error: "Unsupported currency requested."});
-    let currency = CS.getInstance(currencyName);
+    let currency = Currencies.getInstance(currencyName);
     return res.json({data: currency.generateWallet()})
 };
