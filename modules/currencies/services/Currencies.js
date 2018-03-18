@@ -16,6 +16,8 @@ let Currencies = {
             });
             //
             currency.on("confirmed_tx", (tx, rawtx) => {
+                logger.info(tx);
+                logger.info(rawtx);
                 ExternalCallbacks.onNewTx(tx, rawtx)
             });
             //create an instance
@@ -29,6 +31,11 @@ let Currencies = {
     syncWatchList(currencyName) {
         if (!currencyName || this.currenciesList.indexOf(currencyName) === -1)
             return null;
+
+        // Add currencies secondary address in watchlist too.
+        CONFIG.currencies[currencyName].wallets.forEach((info) => {
+            this.instances[currencyName].addWatchAddresses(info.address);
+        });
         return Wallets.getWalletsAddress(currencyName, (list) => {
             this.instances[currencyName].addWatchAddresses(list);
         })
