@@ -8,7 +8,7 @@ class Currency {
     constructor(notation, options) {
         this.notation = notation;
         this.options = options;
-        this.ACTUAL_TRANSFER = false;
+        this.ACTUAL_TRANSFER = true;
         this.watchAddresses = {};
         this.tickIncomingCounter = 0;
 
@@ -83,7 +83,6 @@ class Currency {
 
     /**
      * Once transaction is confirmed
-     * @param tx
      */
     onConfirmedTX(tx, rawtx) {
         this.emit("confirmed_tx", tx, rawtx)
@@ -91,10 +90,13 @@ class Currency {
 
     /**
      * when outgoing transaction is created
-     * @param tx
      */
     onOutgoingTX(tx, rawtx) {
         this.emit("outgoing_tx", tx, rawtx)
+    }
+
+    onWaitingForConfirmation(tx,rawtx){
+        this.emit("unconfirmed_tx", tx, rawtx)
     }
 
 

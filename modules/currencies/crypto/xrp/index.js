@@ -55,6 +55,7 @@ class Ripple extends Currency {
     }
 
     waitForConfirmation(tx, rawtx) {
+        this.onWaitingForConfirmation(tx,rawtx);
         return this.onConfirmedTX(tx, rawtx);
     }
 
