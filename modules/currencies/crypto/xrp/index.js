@@ -104,37 +104,37 @@ class Ripple extends Currency {
         });
     }
 
-    transfer(source, destination, value, cb, tag) {
+    transfer(transaction, cb) {
         let txID = this.getTransactionID();
 
-        this.logTx("info", txID, {form: source.address, destination, value, tag});
+        this.logTx("info", txID, transaction);
 
         let api = this.api;
 
-        value = "" + value;
+        let value = "" + transaction.value;
         const payment = {
             source: {
-                address: source.address,
+                address: transaction.source.address,
                 maxAmount: {
                     value: value,
                     currency: 'XRP'
                 }
             },
             destination: {
-                address: destination,
+                address: transaction.destination,
                 amount: {
                     value: value,
                     currency: 'XRP'
                 }
             }
         };
-        if (tag)
-            payment.destination['tag'] = tag.match(/\d+/g).map(Number);
+        if (transaction.tag)
+            payment.destination['tag'] = transaction.tag.match(/\d+/g).map(Number);
 
         this.logTx("debug", txID, payment);
-        return api.preparePayment(source.address, payment, instructions).then(prepared => {
+        return api.preparePayment(transaction.source.address, payment, instructions).then(prepared => {
             // Sign the transaction with user's key.
-            const {signedTransaction} = api.sign(prepared.txJSON, source.secret);
+            const {signedTransaction} = api.sign(prepared.txJSON, transaction.source.secret);
 
             this.logTx("debug", txID, 'Payment transaction signed, submitting it.');
 

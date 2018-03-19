@@ -106,7 +106,7 @@ class Currency {
 
     send(to, value, cb, tag) {
         logger.info("Send", {to, value, cb, tag});
-        return this.transfer({source: this.primaryWallet, destination: to, value}, cb);
+        return this.transfer({source: this.primaryWallet, destination: to, value, tag}, cb);
     }
 
 
