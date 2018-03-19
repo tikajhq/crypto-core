@@ -34,7 +34,7 @@ class Currency {
 
     _syncWatchAddressList() {
         //add primary wallet to list.
-        this.watchAddresses[this.primaryWallet] = 1;
+        this.watchAddresses[this.primaryWallet.address] = 1;
     }
 
     setWatchAddresses(addressList) {
