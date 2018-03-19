@@ -44,7 +44,7 @@ function boot() {
         .get(Router.list_all);
 
     app.route('/api/currencies/:currency/send').get(Router.send);
-    app.route('/api/currencies/:currency/generateWallet').get(Router.getWallet);
+    app.route('/api/currencies/:currency/generate_wallet').get(Router.generateWallet);
 
     app.use(express.static('www'))
 }

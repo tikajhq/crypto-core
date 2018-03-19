@@ -2,8 +2,9 @@ const Currencies = require("./services/Currencies");
 const Rates = require("./services/RateSync");
 
 /**
- * @api {get} /currencies/list List currencies
+ * @api {get} /api/currencies/list List currencies
  * @apiGroup Currency
+ * @apiDescription List all available currencies along with default system wallets.
  *
  * @apiError (500) {object} error Object describing error.
  *
@@ -23,8 +24,9 @@ exports.list_all = function (req, res) {
 };
 
 /**
- * @api {get} /currencies/:currency/send Send currencies.
+ * @api {get} /api/currencies/:currency/send Send currencies.
  * @apiGroup Currency
+ * @apiDescription Provides method to send certain amount from core to different addresses.
  *
  * @apiParam {Number} to Address of wallet to transfer funds to.
  * @apiParam {Number} amount Number of currencies to be transferred. Can be in decimal.
@@ -69,8 +71,9 @@ exports.send = function (req, res) {
 
 
 /**
- * @api {get} /currencies/:currency/generateWallet Generate wallet.
+ * @api {get} api/currencies/:currency/generate_wallet Generate wallet.
  * @apiGroup Currency
+ * @apiDescription Generate a wallet using this key
  *
  * @apiError (500) {object} error Object describing error.
  * @apiSuccess {object} data Wallet with <code>address</code> and <code>secret</code>.
@@ -83,7 +86,7 @@ exports.send = function (req, res) {
     }
 }
  */
-exports.getWallet = function (req, res) {
+exports.generateWallet = function (req, res) {
     let currencyName = req.params.currency;
     if (!currencyName || CONFIG.AVAILABLE_CURRENCIES.indexOf(currencyName) === -1)
         return res.status(500).send({error: "Unsupported currency requested."});

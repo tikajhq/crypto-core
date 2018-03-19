@@ -1,6 +1,6 @@
 const Currencies = require("./Currencies");
 let WebSocketServer = require('ws').Server,
-    wss = new WebSocketServer({port: 40510});
+    wss = new WebSocketServer({port: 4101});
 
 
 wss.on('connection', (ws) => {

@@ -46,7 +46,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-    var ws = new WebSocket('ws://localhost:40510');
+    var ws = new WebSocket('ws://cc.al.tik.co:4101');
 
     function send(type, params) {
         return ws.send(JSON.stringify({type: type, params: params}))
