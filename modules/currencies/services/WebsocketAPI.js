@@ -59,7 +59,7 @@ wss.on('connection', (ws) => {
                 let currency = Currencies.getInstance(message.params.currency);
                 if (!currency)
                     return sendError("`currency` instance not present in server.");
-                if (['incoming_tx', 'confirmed_tx', 'outgoing_tx'].indexOf(message.params.event) === -1)
+                if (['incoming_tx', 'confirmed_tx', 'outgoing_tx','unconfirmed_tx'].indexOf(message.params.event) === -1)
                     return sendError("Unknown event to subscribe to.");
 
                 // manage the subscription list

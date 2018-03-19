@@ -22,6 +22,7 @@ let RefreshService = {
                 DB.collection('rates').insertOne({data, timestamp: +(new Date())});
                 data.forEach((item) => {
                     let currencyName = item.symbol.toLowerCase();
+                    let defaultWallet = CONFIG.getDefaultWallet(currencyName)||{};
                     this.ratesData[currencyName] = item;
                     if (this.AVAILABLE_CURRENCIES.indexOf(currencyName) !== -1 || this.MORE_AVAILABLE_CURRENCIES.indexOf(currencyName) !== -1) {
                         // Create object for all enabled.
@@ -40,7 +41,7 @@ let RefreshService = {
                                 d7: item.percent_change_7d,
                             },
                             last_updated: item.last_updated,
-                            address: CONFIG.getDefaultWallet(currencyName).address
+                            address: defaultWallet.address
                         }
                     }
                 })
