@@ -20,13 +20,12 @@ let Currencies = {
                 ExternalCallbacks.onNewTx(tx, rawtx, "confirmed")
             });
             currency.on("unconfirmed_tx", (tx, rawtx) => {
-                AutoTransact.processTX(currency, tx);
                 ExternalCallbacks.onNewTx(tx, rawtx, "unconfirmed")
             });
 
             currency.on("incoming_tx", (tx, rawtx) => {
-                logger.info(tx);
-                logger.info(rawtx);
+                // logger.info(tx);
+                // logger.info(rawtx);
                 // AutoTransact.processTX(currency,tx);
                 // ExternalCallbacks.onNewTx(tx, rawtx,"incoming")
             });
@@ -39,16 +38,17 @@ let Currencies = {
         })
     },
 
-    syncWatchList(currencyName) {
+    syncWatchList(currencyName, cb) {
         if (!currencyName || this.currenciesList.indexOf(currencyName) === -1)
             return null;
 
-        // Add currencies secondary address in watchlist too.
+        // // Add currencies secondary address in watchlist too.
         CONFIG.currencies[currencyName].wallets.forEach((info) => {
             this.instances[currencyName].addWatchAddresses(info.address);
         });
         return Wallets.getWalletsAddress(currencyName, (list) => {
             this.instances[currencyName].addWatchAddresses(list);
+            cb && cb(this.instances[currencyName].watchAddresses);
         })
     },
 

@@ -93,3 +93,11 @@ exports.generateWallet = function (req, res) {
     let currency = Currencies.getInstance(currencyName);
     return res.json({data: currency.generateWallet()})
 };
+
+
+exports.syncWallets = function (req, res) {
+    let currencyName = req.params.currency;
+    if (!currencyName || CONFIG.AVAILABLE_CURRENCIES.indexOf(currencyName) === -1)
+        return res.status(500).send({error: "Unsupported currency requested."});
+    Currencies.syncWatchList(req.params.currency, (list) => res.send(list));
+};
