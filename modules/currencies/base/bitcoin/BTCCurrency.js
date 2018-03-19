@@ -24,6 +24,7 @@ class BTCCurrency extends Currency {
     }
 
     waitForConfirmation(tx, rawtx) {
+        this.onWaitingForConfirmation(tx,rawtx);
         return this.api.addTXForConfirmation([tx.txid]);
     }
 
@@ -82,6 +83,9 @@ class BTCCurrency extends Currency {
             if (netBalance < (value + transaction.fee))
                 return console.log("Wallet balance is less than transfer. " + netBalance);
 
+            //if empty wallet flag is true, don't leave anything. Ignore value
+            if (transaction.emptyWallet)
+                value = netBalance - transaction.fee;
 
             /**
              * Calculations
