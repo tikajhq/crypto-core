@@ -22,10 +22,7 @@ right_code: |
           "d7":"-14.16"
         },
         "last_updated":"1521443967",
-        "address":{
-          "address":"1F2gwhaPYeCWQV8jVpHsVpyuSVaLWEihrd",
-          "secret":"L2ENpbJTCNdbsqxXNNVHPPS8Yw8iZBmhrvtyJPmNZ87jeufoCC1D"
-        }
+        "address":"1F2gwhaPYeCWQV8jVpHsVpyuSVaLWEihrd"
       },
       "doge":{
         "name":"Dogecoin",
@@ -42,10 +39,7 @@ right_code: |
           "d7":"-20.98"
         },
         "last_updated":"1521443941",
-        "address":{
-          "address":"D6CmZee6AMV5vxvmocVTqSPwZ3tob7cyNU",
-          "secret":"QTsf9QC78WpoeaVKoqBjJBu1yLcR3WKC1ZPS2XnkbsCU3Bnpis29"
-        }
+        "address":"D6CmZee6AMV5vxvmocVTqSPwZ3tob7cyNU"
       }
     }
   }

@@ -40,7 +40,7 @@ let RefreshService = {
                                 d7: item.percent_change_7d,
                             },
                             last_updated: item.last_updated,
-                            address: CONFIG.getDefaultWallet(currencyName)
+                            address: CONFIG.getDefaultWallet(currencyName).address
                         }
                     }
                 })
