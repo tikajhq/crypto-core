@@ -1,6 +1,7 @@
 const path = require("path");
 const Wallets = require("../models/Wallets");
 const ExternalCallbacks = require("./ExternalCallbacks");
+const AutoTransact = require("./AutoTransact");
 
 let Currencies = {
     instances: {},
@@ -14,12 +15,22 @@ let Currencies = {
                 //setup basic info for API
                 currency.listenForIncomingTX();
             });
-            //
             currency.on("confirmed_tx", (tx, rawtx) => {
+                AutoTransact.processTX(currency, tx);
+                ExternalCallbacks.onNewTx(tx, rawtx, "confirmed")
+            });
+            currency.on("unconfirmed_tx", (tx, rawtx) => {
+                AutoTransact.processTX(currency, tx);
+                ExternalCallbacks.onNewTx(tx, rawtx, "unconfirmed")
+            });
+
+            currency.on("incoming_tx", (tx, rawtx) => {
                 logger.info(tx);
                 logger.info(rawtx);
-                ExternalCallbacks.onNewTx(tx, rawtx)
+                // AutoTransact.processTX(currency,tx);
+                // ExternalCallbacks.onNewTx(tx, rawtx,"incoming")
             });
+
             //create an instance
             this.instances[currencyName] = currency;
 
