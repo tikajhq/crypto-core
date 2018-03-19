@@ -11,9 +11,13 @@ collections:
   documentation:
     title: Documentation
     position: 1
-  api:
-    title: APIs
+  httpapi:
+    title: HTTP APIs
     position: 2
+  wsapi:
+    title: WS APIs
+    position: 3
+
 gems:
   - jekyll-sitemap
   - jekyll-seo-tag

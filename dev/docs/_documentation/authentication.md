@@ -1,18 +1,7 @@
 ---
 title: Authentication
-position: 2
-right_code: |
-  ~~~ javascript
-  $.get("http://cc.tik.co/api/", { "token": "YOUR_APP_KEY"}, function(data) {
-    alert(data);
-  });
-  ~~~
-  {: title="jQuery" }
-
-  ~~~ bash
-  curl http://cc.tik.co/api/?token=YOUR_APP_KEY
-  ~~~
-  {: title="Curl" }
+position: 3
+description: Authentication
 ---
 
 
