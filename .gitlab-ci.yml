@@ -21,6 +21,8 @@ pages:
   stage: deploy
   script:
   - bundle exec jekyll build -d ./../../public
+  - cd ../../
+  - cp www public/ -r
   artifacts:
     paths:
     - public
