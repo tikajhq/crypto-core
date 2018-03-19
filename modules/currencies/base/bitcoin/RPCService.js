@@ -148,7 +148,7 @@ class RPCService extends EventEmitter {
         const self = this;
         //get whatever is in node memory
         self.rpc.getRawMemPool((err, ret) => {
-            console.log("Get raw memory pool.");
+            // console.log("Get raw memory pool.");
             if (err) {
                 console.error(err);
                 //if error repull after 10s

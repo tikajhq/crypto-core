@@ -4,7 +4,7 @@ description: Websocket API
 position: 10.1
 right_code: |
   ~~~ javascript
-    var ws = new WebSocket('ws://cc.tik.co:4101');
+    var ws = new WebSocket('ws://api.cc.cal.tik.co:4101');
   
     function send(type, params) {
       return ws.send(JSON.stringify({type: type, params: params}))

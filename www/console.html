@@ -46,7 +46,7 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-    var ws = new WebSocket('ws://cc.al.tik.co:4101');
+    var ws = new WebSocket('ws://api.cc.cal.tik.co:4101');
 
     function send(type, params) {
         return ws.send(JSON.stringify({type: type, params: params}))
@@ -54,15 +54,18 @@
 
     // event emmited when connected
     ws.onopen = function () {
-        console.log('websocket is connected ...');
+        log('Connected to server...');
         // sending a send event to websocket server
 
     };
+    function log(data){
+        $("<div class='record'><div class='data'><pre>" + JSON.stringify(data, null, 2) + "</pre></div></div>").hide().prependTo($container).slideToggle();
+    }
 
     var $container = $("#container");
     // event emmited when receiving message
     ws.onmessage = function (ev) {
-        $("<div class='record'><div class='data'><pre>" + JSON.stringify(JSON.parse(ev.data), null, 2) + "</pre></div></div>").hide().prependTo($container).slideToggle();
+        log(JSON.parse(ev.data))
     };
 
     $(document).on('click', '#send', function (e) {
