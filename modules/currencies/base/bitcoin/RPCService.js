@@ -135,7 +135,7 @@ class RPCService extends EventEmitter {
                 recievedTXes.push(tx);
             });
 
-            cb(null, recievedTXes)
+            return cb(null, recievedTXes)
         });
 
     }
@@ -181,9 +181,12 @@ class RPCService extends EventEmitter {
      * calls onNewConfirmedTX if any transaction from confirmationTransactionsCache has counts more than MIN_CONFIRMATION_COUNT
      */
     confirmationService() {
-        logger.debug("Watching TXIDS for confirmations ");
-        logger.debug(Object.keys(this.confirmationTransactionsCache).slice(0, 6));
-        this.getRawTX(Object.keys(this.confirmationTransactionsCache), (err, transactions) => {
+        let txids = Object.keys(this.confirmationTransactionsCache);
+        if(txids.length) {
+            logger.debug(this.currency+" : Watching TXIDS for confirmations ");
+            logger.debug(txids);
+        }
+        this.getRawTX(txids, (err, transactions) => {
             transactions.forEach(transaction => {
                 //if confirmations more than mincount
                 if (transaction.confirmations >= this.MIN_CONFIRMATION_COUNT) {
