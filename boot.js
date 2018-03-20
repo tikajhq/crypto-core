@@ -1,4 +1,5 @@
 const winston = require('winston');
+global._ = require("lodash");
 global.CONFIG = require("./constants");
 
 /*

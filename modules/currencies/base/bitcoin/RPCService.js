@@ -43,6 +43,7 @@ class RPCService extends EventEmitter {
     fetchCoreInfo(cb) {
         this.rpc.getNetworkInfo((err, result) => {
             this.coreInfo = result;
+            // logger.info(result);
             cb(err, result);
         });
     }

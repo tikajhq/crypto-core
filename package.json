@@ -17,6 +17,7 @@
     "coininfo": "git+https://github.com/cryptocoinjs/coininfo.git",
     "coinkey": "^2.0.0",
     "express": "^4.16.2",
+    "lodash": "^4.17.5",
     "mocha-each": "^1.1.0",
     "mongodb": "^3.0.2",
     "node-dogecoin": "^0.3.9",
