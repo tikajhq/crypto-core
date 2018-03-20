@@ -56,7 +56,6 @@ class Currency {
 
     /**
      * To be called for unconfirmed transactions.
-     * @param tx
      */
     onUTXO(tx, rawtx) {
         this.emit("incoming_tx", tx, rawtx);

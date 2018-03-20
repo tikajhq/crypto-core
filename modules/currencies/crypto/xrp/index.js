@@ -8,8 +8,8 @@ class Ripple extends Currency {
         this.primaryWallet = CONFIG.getDefaultWallet(this.notation);
         this.api = new RippleAPI({
             trace: false,
-            // server: 'wss://s2.ripple.com:443',
-            server: 'ws://10.8.0.7:5006'
+            server: 'wss://s2.ripple.com:443',
+            // server: 'ws://10.8.0.7:5006'
         });
         this._bootstrap(cb)
     }
@@ -37,7 +37,7 @@ class Ripple extends Currency {
     }
 
     normalizeTX(rawtx) {
-        //amount: parseFloat(rawtx.Amount) / 1000000,
+        //amount: ,
         return {
             currency: this.notation,
             txid: rawtx.hash,
@@ -45,7 +45,7 @@ class Ripple extends Currency {
                 rawtx.Account
             ],
             to: [
-                {address: [rawtx.Destination], units: rawtx.Amount}
+                {addresses: [rawtx.Destination], units: parseFloat(rawtx.Amount) / 1000000}
             ],
             timestamp: {
                 created: +(new Date()),
