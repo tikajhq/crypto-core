@@ -69,3 +69,5 @@ Allows you to received unconfirmed transactions broadcasted by certain network o
 
 currency 
 : (String) Notation of currency to subscribe event for.
+currencies 
+: (Array) List of notation of currency to subscribe event for. It can be `*` to include all Available Currencies
