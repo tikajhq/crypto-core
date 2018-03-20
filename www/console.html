@@ -63,8 +63,11 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-    // var ws = new WebSocket('ws://api.cc.cal.tik.co:4101');
-    var ws = new WebSocket('ws://localhost:4101');
+    var address = 'ws://api.cc.cal.tik.co:4101';
+    if (location.hostname === "localhost" || location.hostname === "127.0.0.1")
+        address = 'ws://localhost:4101';
+
+    var ws = new WebSocket(address);
 
     var health = {};
 
