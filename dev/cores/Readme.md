@@ -39,13 +39,11 @@ https://github.com/digital-dreamer/blockchain-programming/wiki/How-to-run-a-full
 - *Ports:* 14022/rpc 
 
 
-monero
-neo
-DIGIBYTE
-LISK
+##### Monero/XMR
+- *Client:* `Monero`
+- *Ports:* 18081/rpc 
 
 
-##### Ripple/XRP
-- *Client:* `ripple-lib`
-- *Ports:* 5005/rpc 5006/ws
-- *Disk:* 20GB
+
+- neo
+- LISK

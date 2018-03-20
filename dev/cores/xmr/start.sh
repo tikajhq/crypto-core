@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-pm2 stop dashd
+pm2 start monerod
