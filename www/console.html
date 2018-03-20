@@ -31,14 +31,31 @@
         padding: 5px;
     }
 
+    .healthstat {
+        padding: 5px;
+        margin: 5px;
+    }
+
+    .healthstat.health-0 {
+        background-color: #EC644B;
+    }
+
+    .healthstat.health-100 {
+        background-color: #2ECC71;
+    }
+
 </style>
 
-<form action="" id="form_content">
-    <input id="type" value="subscribe" placeholder="event"/>
-    <input id="data" value='{"event": "incoming_tx", "currency": "doge"}'
-           placeholder='{"event": "incoming_tx", "currency": "doge"}' style="width: 50%;"/>
-    <button id="send">Send</button>
-</form>
+<div id="health"></div>
+<br/>
+<div>
+    <form action="" id="form_content">
+        <input id="type" value="subscribe" placeholder="event"/>
+        <input id="data" value='{"event": "incoming_tx", "currency": "doge"}'
+               placeholder='{"event": "incoming_tx", "currency": "doge"}' style="width: 50%;"/>
+        <button id="send">Send</button>
+    </form>
+</div>
 <div id="container">
 
 </div>
@@ -46,7 +63,20 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
-    var ws = new WebSocket('ws://api.cc.cal.tik.co:4101');
+    // var ws = new WebSocket('ws://api.cc.cal.tik.co:4101');
+    var ws = new WebSocket('ws://localhost:4101');
+
+    var health = {};
+
+    function createHealthStatus() {
+        var html = "";
+        Object.keys(health).forEach((notation) => {
+            var healthstat = health[notation];
+            html += "<span class='healthstat health-" + healthstat.status + "'>" + healthstat.currency.toUpperCase() + " : " + healthstat.history[healthstat.history.length - 1] + "</span>"
+        });
+
+        $('#health').html(html);
+    }
 
     function send(type, params) {
         return ws.send(JSON.stringify({type: type, params: params}))
@@ -56,10 +86,19 @@
     ws.onopen = function () {
         log('Connected to server...');
         // sending a send event to websocket server
-
+        send("subscribe", {"event": "health_updates", currencies: "*"})
     };
-    function log(data){
-        $("<div class='record'><div class='data'><pre>" + JSON.stringify(data, null, 2) + "</pre></div></div>").hide().prependTo($container).slideToggle();
+
+    function log(data) {
+
+        if (data.event === "health_updates") {
+            if (data.data) {
+                health[data.currency] = data.data;
+                createHealthStatus();
+            }
+            // console.log(data);
+        } else
+            $("<div class='record'><div class='data'><pre>" + JSON.stringify(data, null, 2) + "</pre></div></div>").hide().prependTo($container).slideToggle();
     }
 
     var $container = $("#container");
@@ -71,6 +110,6 @@
     $(document).on('click', '#send', function (e) {
         // this will prevent form and reload page on submit.
         e.preventDefault();
-        send($("#type").val().trim(), JSON.parse($("#data").val().trim()))
+        send($("#type").val().trim(), JSON.parse($("#data").val().trim()));
     });
 </script>
