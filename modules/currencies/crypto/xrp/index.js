@@ -50,13 +50,16 @@ class Ripple extends Currency {
             timestamp: {
                 created: +(new Date()),
             },
-            tag: rawtx.DestinationTag
+            tag: rawtx.DestinationTag || null
         }
     }
 
     waitForConfirmation(tx, rawtx) {
-        this.onWaitingForConfirmation(tx,rawtx);
-        return this.onConfirmedTX(tx, rawtx);
+        this.onWaitingForConfirmation(tx, rawtx);
+        //confirm after 1sec
+        setTimeout(() => {
+            this.onConfirmedTX(tx, rawtx);
+        }, 1000);
     }
 
     _bootstrap(cb) {
