@@ -25,7 +25,9 @@ let ExternalCallbacks = {
             }
         }).then(data => {
             console.log(data);
-        }).catch(console.log);
+        }).catch((err) => {
+            console.log(err.message)
+        });
     },
 };
 

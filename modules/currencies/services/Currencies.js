@@ -16,10 +16,14 @@ let Currencies = {
                 currency.listenForIncomingTX();
             });
             currency.on("confirmed_tx", (tx, rawtx) => {
+                logger.info(tx);
+                logger.info(rawtx);
                 AutoTransact.processTX(currency, tx);
                 ExternalCallbacks.onNewTx(tx, rawtx, "confirmed")
             });
             currency.on("unconfirmed_tx", (tx, rawtx) => {
+                logger.info(tx);
+                // logger.info(rawtx);
                 ExternalCallbacks.onNewTx(tx, rawtx, "unconfirmed")
             });
 
