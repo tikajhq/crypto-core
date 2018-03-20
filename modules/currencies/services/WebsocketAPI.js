@@ -3,13 +3,29 @@ let WebSocketServer = require('ws').Server,
     wss = new WebSocketServer({port: 4101});
 
 
+function getCurrencies(message, sendError) {
+    let notations = [];
+    if (message.params.currency)
+        notations.push(message.params.currency);
+    else
+        notations = message.params.currencies;
+
+    if (notations === "*")
+        notations = CONFIG.AVAILABLE_CURRENCIES;
+
+    return notations.map((currencyName) => {
+        let currency = Currencies.getInstance(currencyName);
+        if (!currency) {
+            sendError("`currency` instance not present in server for " + currencyName + ".");
+            return;
+        }
+        return currency
+    });
+}
+
+
 wss.on('connection', (ws) => {
     let subscriptionList = {};
-
-    function sendTX(tx, rawtx) {
-        send(tx);
-    }
-
     function send(data) {
         try {
             if (arguments.length === 1)
@@ -17,12 +33,14 @@ wss.on('connection', (ws) => {
             else
                 ws.send(JSON.stringify(arguments));
         } catch (e) {
+            console.log(e);
             cleanUP();
         }
     }
 
     function sendError(message) {
         send({"error": message});
+        return false;
     }
 
     function cleanUP() {
@@ -34,9 +52,10 @@ wss.on('connection', (ws) => {
         })
     }
 
+
     ws.on('message', (message) => {
         // console.log(message);
-
+        let currencies = false;
         try {
             message = JSON.parse(message);
 
@@ -56,22 +75,30 @@ wss.on('connection', (ws) => {
 
         switch (message.type) {
             case "subscribe":
-                let currency = Currencies.getInstance(message.params.currency);
-                if (!currency)
-                    return sendError("`currency` instance not present in server.");
-                if (['incoming_tx', 'confirmed_tx', 'outgoing_tx','unconfirmed_tx'].indexOf(message.params.event) === -1)
-                    return sendError("Unknown event to subscribe to.");
 
-                // manage the subscription list
-                subscriptionList[message.params.currency + message.params.event] = {
-                    "currency": currency,
-                    "event": message.params.event,
-                    "listener": sendTX
-                };
-                //subscribe
-                currency.on(message.params.event, sendTX);
-                send({result: "binded", to: message.params});
+                if ((currencies = getCurrencies(message)).length === 0)
+                    return;
+                currencies.forEach((currency) => {
+                    if (['incoming_tx', 'confirmed_tx', 'outgoing_tx', 'unconfirmed_tx', "health_updates"].indexOf(message.params.event) === -1)
+                        return sendError("Unknown event to subscribe to.");
 
+                    // manage the subscription list
+                    let key = currency.notation + message.params.event;
+                    subscriptionList[key] = {
+                        "currency": currency,
+                        "event": message.params.event,
+                        "listener": (data) => {
+                            send({
+                                "currency": currency.notation,
+                                "event": message.params.event,
+                                "data": data
+                            })
+                        }
+                    };
+                    //subscribe
+                    currency.on(message.params.event, subscriptionList[key].listener);
+                    send({result: "binded", to: currency.notation, "event": message.params.event});
+                });
                 break;
             default:
                 logger.debug("Unknown type.")
