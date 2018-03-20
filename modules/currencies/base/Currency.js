@@ -3,6 +3,18 @@ let util = require('util'),
 
 const HEALTH_CHECK_INTERVAL = 30 * 1000;
 
+
+function getArrayWithLimitedLength(length) {
+    let array = new Array();
+    array.push = function () {
+        if (this.length >= length) {
+            this.shift();
+        }
+        return Array.prototype.push.apply(this, arguments);
+    };
+    return array;
+}
+
 class Currency {
 
     constructor(notation, options) {
@@ -11,17 +23,38 @@ class Currency {
         this.ACTUAL_TRANSFER = true;
         this.watchAddresses = {};
         this.tickIncomingCounter = 0;
-
+        this.HEALTH_CHECK_INTERVAL = HEALTH_CHECK_INTERVAL;
+        this.healthStore = {
+            currency: this.notation,
+            "status": 0, //maximum 100
+            "history": getArrayWithLimitedLength(10)
+        };
+        //add connected cores info here.
+        this.coresInfo = [];
         this.CurrencyConfig = CONFIG.currencies[notation];
         this.primaryWallet = CONFIG.getDefaultWallet(this.notation);
 
 
         logger.info("Initialized instance of " + this.notation);
         setInterval(() => {
-            logger.info("[" + this.notation + "] Processed " + this.tickIncomingCounter + " TX.");
+            // logger.info("[" + this.notation + "] Processed " + this.tickIncomingCounter + " TX.");
+            this.healthStore.history.push(this.tickIncomingCounter);
+            this.updateHealth();
             this.tickIncomingCounter = 0;
-        }, HEALTH_CHECK_INTERVAL)
+        }, this.HEALTH_CHECK_INTERVAL)
     }
+
+    updateHealth() {
+        let status = 0;
+        let average = (_.meanBy(this.healthStore.history));
+        if (average === 0)
+            status = 0;
+        else
+            status = 100;
+        this.healthStore.status = status;
+        this.emit("health_updates", this.healthStore)
+    }
+
 
     log(message) {
         logger.info(this.notation, " ", message)
@@ -94,7 +127,7 @@ class Currency {
         this.emit("outgoing_tx", tx, rawtx)
     }
 
-    onWaitingForConfirmation(tx,rawtx){
+    onWaitingForConfirmation(tx, rawtx) {
         this.emit("unconfirmed_tx", tx, rawtx)
     }
 
