@@ -15,6 +15,7 @@ let Currencies = {
                 //setup basic info for API
                 currency.listenForIncomingTX();
             });
+            // TODO: Shoot it to the queue.
             currency.on("confirmed_tx", (tx, rawtx) => {
                 logger.info(tx);
                 logger.info(rawtx);

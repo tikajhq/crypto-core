@@ -4,8 +4,6 @@ let coininfo = require('coininfo');
 let RPCClient = require('./BitcoinRPCClient');
 let TransactionDecoder = require('./TransactionDecoder');
 
-//https://github.com/trezor/trezor-common/blob/master/coins.json
-//https://github.com/trezor/trezor-core/blob/master/src/apps/common/coins.py
 
 class RPCService extends EventEmitter {
     constructor(config, cb) {
@@ -43,7 +41,7 @@ class RPCService extends EventEmitter {
     fetchCoreInfo(cb) {
         this.rpc.getNetworkInfo((err, result) => {
             this.coreInfo = result;
-            // logger.info(result);
+            logger.info(result);
             cb(err, result);
         });
     }

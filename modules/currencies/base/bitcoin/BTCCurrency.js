@@ -1,3 +1,6 @@
+//https://github.com/trezor/trezor-common/blob/master/coins.json
+//https://github.com/trezor/trezor-core/blob/master/src/apps/common/coins.py
+
 const Currency = require("./../../base/Currency");
 const RPCService = require("./../../base/bitcoin/RPCService");
 const ChainSo = require("./ChainSo");

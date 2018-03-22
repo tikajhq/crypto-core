@@ -9,7 +9,7 @@ class Ripple extends Currency {
         this.api = new RippleAPI({
             trace: false,
             server: 'wss://s2.ripple.com:443',
-            // server: 'ws://10.8.0.7:5006'
+            // server: 'ws://' + CONFIG.currencies.xrp.core + ':5006'
         });
         this._bootstrap(cb)
     }

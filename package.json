@@ -14,7 +14,7 @@
     "bitcoin-core": "^2.0.0",
     "bitcoind-rpc": "^0.7.1",
     "bitcoinjs-lib": "^3.3.2",
-    "coininfo": "git+https://github.com/cryptocoinjs/coininfo.git",
+    "coininfo": "git+https://github.com/m301/coininfo.git",
     "coinkey": "^2.0.0",
     "express": "^4.16.2",
     "lodash": "^4.17.5",
@@ -24,6 +24,7 @@
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "ripple-lib": "^0.17.9",
+    "web3": "^1.0.0-beta.33",
     "winston": "^3.0.0-rc2",
     "ws": "^4.0.0"
   },

@@ -23,25 +23,8 @@ exports.list_all = function (req, res) {
     res.json({data: Rates.getRates()})
 };
 
-/**
- * @api {get} /api/currencies/:currency/send Send currencies.
- * @apiGroup Currency
- * @apiDescription Provides method to send certain amount from core to different addresses.
- *
- * @apiParam {Number} to Address of wallet to transfer funds to.
- * @apiParam {Number} amount Number of currencies to be transferred. Can be in decimal.
- *
- * @apiError (500) {object} error Object describing error.
- * @apiErrorExample {json} Error-Response:
- *  HTTP/1.1 500
- {
-     "error": "`amount` is missing."
- }
-
- * @apiSuccess {object} data Response received from server
- */
 exports.send = function (req, res) {
-
+    // TODO: Shoot it to the queue.
     let currencyName = req.params.currency;
     if (!currencyName || CONFIG.AVAILABLE_CURRENCIES.indexOf(currencyName) === -1)
         return res.status(500).send({error: "Unsupported currency requested."});
@@ -69,24 +52,8 @@ exports.send = function (req, res) {
     }, req.query['tag']);
 };
 
-
-/**
- * @api {get} api/currencies/:currency/generate_wallet Generate wallet.
- * @apiGroup Currency
- * @apiDescription Generate a wallet using this key
- *
- * @apiError (500) {object} error Object describing error.
- * @apiSuccess {object} data Wallet with <code>address</code> and <code>secret</code>.
- * @apiSuccessExample {json} Success-Response:
- *     HTTP/1.1 200 OK
- {
-    "data": {
-        "secret": "snqUwLxaz2ex11X2FUhek6nFjLryX",
-        "address": "r4DuKiRD83W2gJLJMCMokXfDKAFnCfRxmf"
-    }
-}
- */
 exports.generateWallet = function (req, res) {
+    // TODO: Shoot it to the queue.
     let currencyName = req.params.currency;
     if (!currencyName || CONFIG.AVAILABLE_CURRENCIES.indexOf(currencyName) === -1)
         return res.status(500).send({error: "Unsupported currency requested."});
@@ -96,6 +63,7 @@ exports.generateWallet = function (req, res) {
 
 
 exports.syncWallets = function (req, res) {
+    // TODO: Shoot it to the queue.
     let currencyName = req.params.currency;
     if (!currencyName || CONFIG.AVAILABLE_CURRENCIES.indexOf(currencyName) === -1)
         return res.status(500).send({error: "Unsupported currency requested."});

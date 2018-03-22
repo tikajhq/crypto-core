@@ -76,7 +76,7 @@ wss.on('connection', (ws) => {
         switch (message.type) {
             case "subscribe":
 
-                if ((currencies = getCurrencies(message)).length === 0)
+                if ((currencies = getCurrencies(message, sendError)).length === 0)
                     return;
                 currencies.forEach((currency) => {
                     if (['incoming_tx', 'confirmed_tx', 'outgoing_tx', 'unconfirmed_tx', "health_updates"].indexOf(message.params.event) === -1)

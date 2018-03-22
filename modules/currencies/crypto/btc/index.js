@@ -6,8 +6,6 @@ class BTC extends Currency {
         super("btc");
         this.api = new RPCService({
             currency: this.notation,
-            minConfirmations: 1,
-            confirmationRefreshInterval: 1000 * 10,
             rpcConfig: {
                 protocol: 'http',
                 user: this.notation,
