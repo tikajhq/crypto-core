@@ -6,6 +6,3 @@ mv dogecoin-* doge
 mkdir -p ~/.dogecoin
 wget https://bootstrap.chain.so/bootstrap.dat -O ~/.dogecoin/bootstrap.dat
 cp dogecoin.conf ~/.dogecoin/
-
-#  start service
-pm2 start ./doge/bin/dogecoind -- -server -rest -txindex=1

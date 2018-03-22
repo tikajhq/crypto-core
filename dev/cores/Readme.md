@@ -4,11 +4,6 @@ https://github.com/digital-dreamer/blockchain-programming/wiki/How-to-run-a-full
 #### Coins
 
 
-##### Etherium/ETH
-- *Client:* `etherium`
-- *Ports:* 8545/rpc 8546/ws
-
-
 ##### Ripple/XRP
 - *Client:* `ripple-lib`
 - *Ports:* 5005/rpc 5006/ws
@@ -39,11 +34,13 @@ https://github.com/digital-dreamer/blockchain-programming/wiki/How-to-run-a-full
 - *Ports:* 14022/rpc 
 
 
+##### Etherium/ETH
+- *Client:* `etherium`
+- *Ports:* 8545/rpc 8546/ws
+
 ##### Monero/XMR
 - *Client:* `Monero`
 - *Ports:* 18081/rpc 
-
-
 
 - neo
 - LISK
