@@ -1,5 +1,6 @@
 //https://github.com/trezor/trezor-common/blob/master/coins.json
 //https://github.com/trezor/trezor-core/blob/master/src/apps/common/coins.py
+// https://github.com/ShieldCoin/SHIELD-android
 
 const Currency = require("./../../base/Currency");
 const RPCService = require("./../../base/bitcoin/RPCService");
@@ -23,11 +24,11 @@ class BTCCurrency extends Currency {
     }
 
     normalizeToSatoshis(value) {
-        return Math.round(value * this.divisionFactor);
+        return Math.round((1.0 * value) * this.divisionFactor);
     }
 
     waitForConfirmation(tx, rawtx) {
-        this.onWaitingForConfirmation(tx,rawtx);
+        this.onWaitingForConfirmation(tx, rawtx);
         return this.api.addTXForConfirmation([tx.txid]);
     }
 
@@ -78,7 +79,7 @@ class BTCCurrency extends Currency {
 
             // add each utxo as input.
             outputs.forEach((utxo) => {
-                netBalance += utxo.value;
+                netBalance += utxo.value * 1;
                 tx.addInput(utxo.txid, utxo.index);
             });
 
@@ -93,6 +94,8 @@ class BTCCurrency extends Currency {
             /**
              * Calculations
              */
+            if (self.normalizeToSatoshis(value) === 0)
+                return console.log("Trying to send 0 units. Sick!");
             tx.addOutput(transaction.destination, self.normalizeToSatoshis(value));
 
             //check if anything remains after this tx.
