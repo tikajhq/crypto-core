@@ -4,7 +4,6 @@ const RPCService = require("./../../base/bitcoin/RPCService");
 class DASH extends Currency {
     constructor(options, cb) {
         super("dash");
-        this.divisionFactor = 1;
         this.api = new RPCService({
             currency: this.notation,
             rpcConfig: {
@@ -15,6 +14,8 @@ class DASH extends Currency {
                 port: '9998',
             }
         }, cb);
+        this.fee = 0.0001;
+        this.networkInfo.messagePrefix = '\x18DarkCoin Signed Message:\n';
     }
 }
 
