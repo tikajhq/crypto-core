@@ -100,10 +100,13 @@ class Ripple extends Currency {
 
     }
 
-    submitRawTransaction(txID, signedTransaction) {
+    submitRawTransaction(txID, signedTransaction, cb) {
         this.api.submit(signedTransaction).then((message) => {
-            cb(null, message);
+            cb || cb(null, message);
             this.logTx("debug", txID, message);
+        }).catch((err) => {
+            this.logTx("error", txID, err);
+            cb(err, null);
         });
     }
 
@@ -142,7 +145,7 @@ class Ripple extends Currency {
             this.logTx("debug", txID, 'Payment transaction signed, submitting it.');
 
             //submit the transaction.
-            return this.submitRawTransaction(signedTransaction);
+            return this.submitRawTransaction(txID, signedTransaction, cb);
         }).catch((err) => {
             this.logTx("error", txID, err);
             cb(err, null);
