@@ -14,7 +14,8 @@ class BTC extends Currency {
                 port: '8332',
             }
         }, cb);
-
+        this.fee = 0.0002;
+        this.networkInfo.messagePrefix = "\x18Bitcoin Signed Message:\n"
     }
 }
 

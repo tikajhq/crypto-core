@@ -61,7 +61,7 @@ class Currency {
     }
 
     logTx(level, txID, messages) {
-        logger.log(level, txID, messages)
+        logger.log(level, {txID, messages})
     }
 
 
