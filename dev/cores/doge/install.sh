@@ -5,4 +5,4 @@ rm doge.tar.gz
 mv dogecoin-* doge
 mkdir -p ~/.dogecoin
 wget https://bootstrap.chain.so/bootstrap.dat -O ~/.dogecoin/bootstrap.dat
-cp dogecoin.conf ~/.dogecoin/
+#cp dogecoin.conf ~/.dogecoin/

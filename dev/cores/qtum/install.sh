@@ -5,4 +5,4 @@ echo "deb http://repo.qtum.info/apt/ubuntu/ xenial main" >> /etc/apt/sources.lis
 sudo apt update && sudo apt install qtum -y
 
 
-pm2 start qtumd -- -server -rest -txindex=1 -rpcallowip=0.0.0.0/0 -rpcuser=qtum -rpcpassword=s3cur3 -printtoconsole
+#pm2 start qtumd -- -server -rest -txindex=1 -rpcallowip=0.0.0.0/0 -rpcuser=qtum -rpcpassword=s3cur3 -printtoconsole
