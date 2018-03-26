@@ -15,10 +15,7 @@ class QTUM extends Currency {
                 port: '3889',
             }
         }, cb);
-    }
-
-    transfer(source, destination, value, cb) {
-
+        this.fee = 0.001
     }
 }
 
