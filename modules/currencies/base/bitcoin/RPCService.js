@@ -113,8 +113,8 @@ class RPCService extends EventEmitter {
             });
         }, (err, rawtxs) => {
             if (err) {
-                console.error(err);
-                console.error("THERE IS SOME CRITICAL ISSUE.");
+                console.log(err);
+                console.log("SOMETHING CRITICAL! ");
                 return cb(err, recievedTXes)
             }
 

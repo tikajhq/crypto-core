@@ -72,7 +72,7 @@ exports.getBalance = function (req, res) {
 
     let address = req.query['address'];
     if (!address)
-        return res.status(500).send({error: "`address` address is missing."});
+        return res.status(500).send({error: "`address` is missing."});
 
     currency.getBalance(address, (err, success) => {
         if (err)

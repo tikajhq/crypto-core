@@ -27,7 +27,7 @@ class Currency {
         this.healthStore = {
             currency: this.notation,
             "status": 0, //maximum 100
-            "history": getArrayWithLimitedLength(10)
+            "history": getArrayWithLimitedLength(30)
         };
         //add connected cores info here.
         this.coresInfo = [];

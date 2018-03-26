@@ -111,10 +111,11 @@ function rpc(request, callback) {
     });
 
     req.on('error', function (e) {
-        var err = new Error(errorMessage + 'Request Error: ' + e.message);
+        console.log("[" + this.currency + "] COULDN'T GET NEW TX, NODE DOWN ? Please check. Below is error. ");
+        console.log(e.message);
         if (!called) {
             called = true;
-            callback(err);
+            callback(new Error(errorMessage + 'Request Error: ' + e.message));
         }
     });
 
