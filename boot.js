@@ -12,7 +12,7 @@ const logFormat = winston.format.printf(function (info) {
 });
 
 global.logger = winston.createLogger({
-    level: 'debug',
+    level: global.LOG_LEVEL || 'debug',
     format: winston.format.combine(
         winston.format.timestamp(),
         winston.format.simple(),

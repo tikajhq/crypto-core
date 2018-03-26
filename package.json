@@ -4,9 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "mocha \"./modules/**/test.js\"",
-    "start": "node server.js",
-    "doc": "apidoc -i modules/ -o dev/docs"
+    "test": "mocha \"./modules/**/tests/*.js\"",
+    "start": "node server.js"
   },
   "author": "Madhurendra Sachan <madhurendra@tikaj.com>",
   "license": "ISC",
@@ -14,9 +13,11 @@
     "bitcoin-core": "^2.0.0",
     "bitcoind-rpc": "^0.7.1",
     "bitcoinjs-lib": "^3.3.2",
+    "chai": "^4.1.2",
     "coininfo": "git+https://github.com/m301/coininfo.git",
     "coinkey": "^2.0.0",
     "express": "^4.16.2",
+    "it-each": "^0.3.1",
     "lodash": "^4.17.5",
     "mocha-each": "^1.1.0",
     "mongodb": "^3.0.2",
