@@ -45,6 +45,7 @@ function boot() {
 
     app.route('/api/currencies/:currency/send').get(Router.send);
     app.route('/api/currencies/:currency/generate_wallet').get(Router.generateWallet);
+    app.route('/api/currencies/:currency/get_balance').get(Router.getBalance);
     app.route('/api/currencies/:currency/sync').get(Router.syncWallets);
 
     app.use(express.static('www'))

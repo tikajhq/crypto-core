@@ -61,6 +61,26 @@ exports.generateWallet = function (req, res) {
     return res.json({data: currency.generateWallet()})
 };
 
+exports.getBalance = function (req, res) {
+    // TODO: Shoot it to the queue.
+    let currencyName = req.params.currency;
+    if (!currencyName || CONFIG.AVAILABLE_CURRENCIES.indexOf(currencyName) === -1)
+        return res.status(500).send({error: "Unsupported currency requested."});
+
+    let currency = Currencies.getInstance(currencyName);
+
+
+    let address = req.query['address'];
+    if (!address)
+        return res.status(500).send({error: "`address` address is missing."});
+
+    currency.getBalance(address, (err, success) => {
+        if (err)
+            return res.status(500).send({error: "error in getting balance.", ref: err});
+        return res.json({data: success});
+    })
+};
+
 
 exports.syncWallets = function (req, res) {
     // TODO: Shoot it to the queue.
