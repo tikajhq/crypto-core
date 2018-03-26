@@ -4,7 +4,9 @@
 
 const Currency = require("./../../base/Currency");
 const RPCService = require("./../../base/bitcoin/RPCService");
-const ChainSo = require("./ChainSo");
+const ChainSo = require("./../HTTPAPI/ChainSo");
+const CryptoID = require("./../HTTPAPI/CryptoID");
+const HTTPQTUM = require("./../HTTPAPI/HTTPQTUM");
 
 let bitcoinjs = require('bitcoinjs-lib');
 let CoinKey = require('coinkey');
@@ -19,8 +21,18 @@ class BTCCurrency extends Currency {
         this.divisionFactor = 100000000;
 
         //if its one of currency supported by chain.so, use it.
-        if (['btc', 'ltc', 'doge', 'dash'].indexOf(notation) !== -1)
-            this.HTTPAPI = new ChainSo(notation)
+        if (ChainSo.SUPPORTED_CURRENCIES.indexOf(notation) !== -1)
+            this.HTTPAPI = new ChainSo(notation);
+        else if (CryptoID.SUPPORTED_CURRENCIES.indexOf(notation) !== -1)
+            this.HTTPAPI = new CryptoID(notation);
+        else if (HTTPQTUM.SUPPORTED_CURRENCIES.indexOf(notation) !== -1)
+            this.HTTPAPI = new HTTPQTUM(notation);
+
+        this.getBalance = this.getBalance.bind(this);
+        this.waitForConfirmation = this.waitForConfirmation.bind(this);
+        this.listenForIncomingTX = this.listenForIncomingTX.bind(this);
+        this.generateWallet = this.generateWallet.bind(this);
+        this.transfer = this.transfer.bind(this);
     }
 
     normalizeToSatoshis(value) {
@@ -46,6 +58,7 @@ class BTCCurrency extends Currency {
         })
     }
 
+
     generateWallet() {
         let ck = new CoinKey.createRandom(this.currencyInfo);
         return {
@@ -54,6 +67,10 @@ class BTCCurrency extends Currency {
             key: ck.privateKey.toString('hex'),
         }
 
+    }
+
+    getBalance(walletAddress, cb) {
+        return this.HTTPAPI.getBalance(walletAddress, cb);
     }
 
 

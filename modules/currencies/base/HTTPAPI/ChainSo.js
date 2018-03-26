@@ -3,7 +3,7 @@ const HTTPAPI = require("./HTTPAPI");
 class ChainSo extends HTTPAPI {
     constructor(currency) {
         super(currency, {
-            host: " https://chain.so/api/v2/",
+            host: "https://chain.so/api/v2/",
             endpoints: {
                 "get_balance": "get_address_balance/" + currency + "/[address]",
                 "get_received": "get_address_received/" + currency + "/[address]",
@@ -13,7 +13,7 @@ class ChainSo extends HTTPAPI {
                 "get_transaction": "get_tx/" + currency + "[txid]",
                 "get_block": "get_blockhash/" + currency + "/[hash]",
             }
-        })
+        });
     }
 
 
@@ -39,5 +39,6 @@ class ChainSo extends HTTPAPI {
 
 }
 
+ChainSo.SUPPORTED_CURRENCIES = ['btc', 'ltc', 'doge', 'dash'];
 
 module.exports = ChainSo;

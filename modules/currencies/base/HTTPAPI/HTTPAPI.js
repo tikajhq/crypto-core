@@ -5,6 +5,8 @@ class HTTPAPI {
         this.APIHost = config.host || 'https://blockchain.info/';
         this.endpoints = config.endpoints;
         this.endparam = config.endparam || "";
+        if (!notation)
+            throw new Error("No currency passed while initializing API.");
     }
 
     makeAPICall(endpoint, params, cb) {
@@ -27,5 +29,4 @@ class HTTPAPI {
         })
     }
 }
-
 module.exports = HTTPAPI;
