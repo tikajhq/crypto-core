@@ -64,10 +64,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
     var address = 'ws://api.cc.cal.tik.co:4101';
-    if (location.hostname === "localhost" || location.hostname === "127.0.0.1")
-        address = 'ws://localhost:4101';
+    if (location.hostname !== "crypto.sites.tik.co")
+        address = (location.protocol === "https:" ? "wss" : "ws") + '://' + location.hostname + ':' + (location.protocol === "https:" ? "4102" : "4101");
 
-    var ws = new WebSocket(address);
+    var ws = null;
 
     var health = {};
 
@@ -85,15 +85,7 @@
         return ws.send(JSON.stringify({type: type, params: params}))
     }
 
-    // event emmited when connected
-    ws.onopen = function () {
-        log('Connected to server...');
-        // sending a send event to websocket server
-        send("subscribe", {"event": "health_updates", currencies: "*"})
-    };
-
     function log(data) {
-
         if (data.event === "health_updates") {
             if (data.data) {
                 health[data.currency] = data.data;
@@ -105,14 +97,34 @@
     }
 
     var $container = $("#container");
-    // event emmited when receiving message
-    ws.onmessage = function (ev) {
-        log(JSON.parse(ev.data))
-    };
-
     $(document).on('click', '#send', function (e) {
         // this will prevent form and reload page on submit.
         e.preventDefault();
         send($("#type").val().trim(), JSON.parse($("#data").val().trim()));
     });
+
+
+    function connectWS() {
+        ws = new WebSocket(address);
+        // event emmited when connected
+        ws.onopen = function () {
+            log('Connected to server...');
+            // sending a send event to websocket server
+            send("subscribe", {"event": "health_updates", currencies: "*"})
+        };
+
+        // event emmited when receiving message
+        ws.onmessage = function (ev) {
+            log(JSON.parse(ev.data))
+        };
+        ws.onclose = function () {
+            // Try to reconnect in 5 seconds
+            setTimeout(function () {
+                connectWS();
+            }, 5000);
+        };
+    }
+
+    connectWS();
+
 </script>
