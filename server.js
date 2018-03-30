@@ -33,20 +33,15 @@ function boot() {
 
     console.log('API Server started on: ' + port);
 
-    let Router = require("./modules/currencies/Router");
+
+    let routes = require("./modules/currencies/routes");
+    //register api
+    app.use("/api/", routes);
+
     const wsAPI = require("./modules/currencies/services/WebsocketAPI");
     const Currencies = require("./modules/currencies/services/Currencies");
     const Rates = require("./modules/currencies/services/RateSync");
     Currencies.init(CONFIG.AVAILABLE_CURRENCIES);
     Rates.init(CONFIG.AVAILABLE_CURRENCIES);
-
-    app.route('/api/currencies/list')
-        .get(Router.list_all);
-
-    app.route('/api/currencies/:currency/send').get(Router.send);
-    app.route('/api/currencies/:currency/generate_wallet').get(Router.generateWallet);
-    app.route('/api/currencies/:currency/get_balance').get(Router.getBalance);
-    app.route('/api/currencies/:currency/sync').get(Router.syncWallets);
-
     app.use(express.static('www'))
 }
