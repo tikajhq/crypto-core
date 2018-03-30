@@ -1,6 +1,11 @@
+const os = require("os");
 const winston = require('winston');
+global.HOSTNAME = os.hostname();
 global._ = require("lodash");
-global.CONFIG = require("./constants");
+// get default config
+const defaultConfig = require("./configs/defaults");
+//overwrite it
+global.CONFIG = _.assign({}, defaultConfig, (require("./configs/" + HOSTNAME)));
 
 /*
  * Create a logger
