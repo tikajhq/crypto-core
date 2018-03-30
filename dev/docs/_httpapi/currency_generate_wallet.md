@@ -25,3 +25,5 @@ right_code: |
 
 Wallet with <code>address</code> and <code>secret</code>.
 
+save 
+: (Boolean) Set it to anything, if true wallet will be securely saved in database. No `secret` or `key` is returned.
