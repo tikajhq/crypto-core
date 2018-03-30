@@ -1,7 +1,3 @@
-//https://github.com/trezor/trezor-common/blob/master/coins.json
-//https://github.com/trezor/trezor-core/blob/master/src/apps/common/coins.py
-// https://github.com/ShieldCoin/SHIELD-android
-
 const Currency = require("./../../base/Currency");
 const RPCService = require("./../../base/bitcoin/RPCService");
 const ChainSo = require("./../HTTPAPI/ChainSo");
@@ -76,6 +72,7 @@ class BTCCurrency extends Currency {
 
     transfer(transaction, cb) {
         const self = this;
+        let debug = true;
 
         transaction.fee = (transaction.fee || this.fee);
         //convert value to satoshis
@@ -93,16 +90,27 @@ class BTCCurrency extends Currency {
             let netBalance = 0;
             let tx = new bitcoinjs.TransactionBuilder(this.networkInfo);
 
+            if (debug) {
+                console.log("Outputs received:");
+                console.log(outputs);
+            }
+
 
             // add each utxo as input.
             outputs.forEach((utxo) => {
                 netBalance += utxo.value * 1;
+                if (debug)
+                    console.log("Added: " + utxo.value + ", Net Balance: " + netBalance + ", TXID:" + utxo.txid + ", Index:" + utxo.index);
                 tx.addInput(utxo.txid, utxo.index);
             });
+
+            if (debug)
+                console.log({netBalance, value, "fee": transaction.fee});
 
             // see if balance is upto mark.
             if (netBalance < (value + transaction.fee))
                 return console.log("Wallet balance is less than transfer. " + netBalance);
+
 
             //if empty wallet flag is true, don't leave anything. Ignore value
             if (transaction.emptyWallet)
@@ -113,12 +121,19 @@ class BTCCurrency extends Currency {
              */
             if (self.normalizeToSatoshis(value) === 0)
                 return console.log("Trying to send 0 units. Sick!");
+
+            if (debug)
+                console.log("Adding output, Destination: " + transaction.destination + ", Value:" + self.normalizeToSatoshis(value));
+
             tx.addOutput(transaction.destination, self.normalizeToSatoshis(value));
 
             //check if anything remains after this tx.
             let remaining = netBalance - value - transaction.fee;
-            if (remaining > transaction.fee)
+            if (remaining > transaction.fee) {
+                if (debug)
+                    console.log("There is something remaining, adding Destination:" + transaction.source.address + ", Value:" + self.normalizeToSatoshis(remaining));
                 tx.addOutput(transaction.source.address, self.normalizeToSatoshis(remaining));
+            }
 
 
             /**
