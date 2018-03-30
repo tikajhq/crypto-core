@@ -29,8 +29,8 @@ class CryptoID extends HTTPAPI {
             let txs = response.unspent_outputs.map((item) => {
                 return {
                     "txid": item.tx_hash,
-                    index: item.tx_output_n,
-                    value: parseFloat(item.value),
+                    index: item['tx_output_n'] || item['tx_ouput_n'],
+                    value: parseFloat(item.value) / CONFIG.SATOSHIS,
                     confirmations: item.confirmations
                 }
             });
