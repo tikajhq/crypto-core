@@ -11,11 +11,12 @@ class QTUM extends Currency {
                 protocol: 'http',
                 user: this.notation,
                 pass: 's3cur3',
-                host: this.CurrencyConfig.core,
-                port: '3889',
+                host: this.CurrencyConfig.core_host,
+                port: this.CurrencyConfig.core_port,
             }
         }, cb);
-        this.fee = 0.001
+        this.fee = 0.01;
+        this.networkInfo.messagePrefix = "\x19Qtum Signed Message:\n";
     }
 }
 

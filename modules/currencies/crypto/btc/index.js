@@ -10,8 +10,8 @@ class BTC extends Currency {
                 protocol: 'http',
                 user: this.notation,
                 pass: 's3cur3',
-                host: this.CurrencyConfig.core,
-                port: '8332',
+                host: this.CurrencyConfig.core_host,
+                port: this.CurrencyConfig.core_port,
             }
         }, cb);
         this.fee = 0.0002;

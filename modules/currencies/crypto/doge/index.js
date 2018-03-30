@@ -10,8 +10,8 @@ class Doge extends Currency {
                 protocol: 'http',
                 user: this.notation,
                 pass: 's3cur3',
-                host: this.CurrencyConfig.core,
-                port: '22555',
+                host: this.CurrencyConfig.core_host,
+                port: this.CurrencyConfig.core_port,
             }
         }, cb);
         this.fee = 0.5;
