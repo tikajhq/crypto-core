@@ -7,7 +7,7 @@ let rp = require('request-promise');
 let RefreshService = {
     CURRENCY_LIMITS: 100,
     AVAILABLE_CURRENCIES: [],
-    MORE_AVAILABLE_CURRENCIES: ['xrp', 'btc', 'doge', 'dash', 'eth', 'xmr', 'neo', 'qtum', 'dgb', 'lsk'],
+    MORE_AVAILABLE_CURRENCIES: ['xrp', 'btc', 'doge', 'dash', 'eth', 'xmr', 'neo', 'qtum', 'dgb', 'lsk', "ltc"],
     APIEndpoint: "https://api.coinmarketcap.com/v1/ticker/",
     REFRESH_INTERVAL: 5 * 60 * 1000,
     ratesData: {},
@@ -53,7 +53,8 @@ let RefreshService = {
             });
     },
 
-    init: function () {
+    init: function (AVAILABLE_CUR) {
+        this.AVAILABLE_CURRENCIES = AVAILABLE_CUR;
         this.updateRates();
         setInterval(this.updateRates, this.REFRESH_INTERVAL);
     },

@@ -3,6 +3,7 @@ const Wallets = require("../models/Wallets");
 const ExternalCallbacks = require("./ExternalCallbacks");
 const AutoTransact = require("./AutoTransact");
 
+
 let Currencies = {
     instances: {},
     currenciesList: [],

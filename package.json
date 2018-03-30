@@ -10,6 +10,7 @@
   "author": "Madhurendra Sachan <madhurendra@tikaj.com>",
   "license": "ISC",
   "dependencies": {
+    "amqplib": "^0.5.2",
     "bitcoin-core": "^2.0.0",
     "bitcoind-rpc": "^0.7.1",
     "bitcoinjs-lib": "^3.3.2",

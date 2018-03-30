@@ -24,5 +24,12 @@ let assert = require('assert');
             });
 
         });
+
+        describe("Should have valid networkInfo");
+        describe("Should have 0 send validation.");
+        describe("wait for confirmation"); //take an incoming tx, add to list, wait for confirmation.
+
+
+
     });
-})
+});
