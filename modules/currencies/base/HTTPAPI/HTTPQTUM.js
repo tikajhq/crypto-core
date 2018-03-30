@@ -19,7 +19,7 @@ class HTTPQTUM extends HTTPAPI {
             if (err)
                 return cb(err);
 
-            cb(null, parseFloat(response) / 100000000)
+            cb(null, parseFloat(response) / CONFIG.SATOSHIS)
         });
     }
 
@@ -31,7 +31,7 @@ class HTTPQTUM extends HTTPAPI {
                 return {
                     "txid": item.txid,
                     index: item.vout,
-                    value: parseFloat(item.amount) / 100000000,
+                    value: parseFloat(item.amount),
                     confirmations: item.confirmations
                 }
             });
