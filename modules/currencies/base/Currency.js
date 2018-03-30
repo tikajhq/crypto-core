@@ -57,7 +57,7 @@ class Currency {
 
 
     log(message) {
-        logger.info(this.notation, " ", message)
+        logger.info(this.notation + " " + message)
     }
 
     logTx(level, txID, messages) {
@@ -78,6 +78,7 @@ class Currency {
     addWatchAddresses(addressList) {
         if (typeof addressList === "string")
             addressList = [addressList];
+
         addressList.forEach((address) => this.watchAddresses[address] = 1);
         this._syncWatchAddressList();
     }
