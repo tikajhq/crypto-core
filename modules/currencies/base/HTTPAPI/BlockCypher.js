@@ -1,9 +1,12 @@
 const HTTPAPI = require("./HTTPAPI");
 
+
 class BlockCypher extends HTTPAPI {
     constructor(currency) {
+
         super(currency, {
-            host: "https://api.blockcypher.com/v1/",
+            //only for testing purposese, set CORRUPT_BLOCKCYPHER
+            host: "https://api.blockcypher.com/v1/" + (global['CORRUPT_BLOCKCYPHER'] ? "/random/" : ""),
             endpoints: {
                 "get_balance": currency + "/main/addrs/[address]/balance",
                 "get_unspent": currency + "/main/addrs/[address]?unspentOnly=true",
