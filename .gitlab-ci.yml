@@ -6,10 +6,12 @@ variables:
 before_script:
   - cd dev/docs
   - bundle install
+  - cd ../../
 
 test:
   stage: test
   script:
+  - cd dev/docs
   - bundle exec jekyll build -d ./../../test
   artifacts:
     paths:
@@ -23,6 +25,7 @@ pages:
   - npm install
   - npm -g install mocha mochawesome
   - bash test.sh
+  - cd dev/docs
   - bundle exec jekyll build -d ./../../public
   - cd ../../
   - cp www public/ -r

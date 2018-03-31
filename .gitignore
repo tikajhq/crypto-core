@@ -5,3 +5,4 @@ dev/docs/_site
 dev/docs/.sass-cache
 dev/docs/Gemfile.lock
 configs/secrets.js
+dev/docs/tests
