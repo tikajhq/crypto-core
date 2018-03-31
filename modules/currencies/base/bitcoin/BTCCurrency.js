@@ -1,8 +1,6 @@
 const Currency = require("./../../base/Currency");
 const RPCService = require("./../../base/bitcoin/RPCService");
-const ChainSo = require("./../HTTPAPI/ChainSo");
-const CryptoID = require("./../HTTPAPI/CryptoID");
-const HTTPQTUM = require("./../HTTPAPI/HTTPQTUM");
+const SuperResolver = require("../../base/HTTPAPI/SuperResolver");
 
 let bitcoinjs = require('bitcoinjs-lib');
 let CoinKey = require('coinkey');
@@ -16,13 +14,7 @@ class BTCCurrency extends Currency {
         this.networkInfo = coinInfo(this.notation).toBitcoinJS();
         this.divisionFactor = 100000000;
 
-        //if its one of currency supported by chain.so, use it.
-        if (ChainSo.SUPPORTED_CURRENCIES.indexOf(notation) !== -1)
-            this.HTTPAPI = new ChainSo(notation);
-        else if (CryptoID.SUPPORTED_CURRENCIES.indexOf(notation) !== -1)
-            this.HTTPAPI = new CryptoID(notation);
-        else if (HTTPQTUM.SUPPORTED_CURRENCIES.indexOf(notation) !== -1)
-            this.HTTPAPI = new HTTPQTUM(notation);
+        this.HTTPAPI = new SuperResolver(notation);
 
         this.getBalance = this.getBalance.bind(this);
         this.waitForConfirmation = this.waitForConfirmation.bind(this);
