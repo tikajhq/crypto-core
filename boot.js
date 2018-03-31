@@ -1,11 +1,14 @@
+const fs = require('fs');
+
 const os = require("os");
 const winston = require('winston');
 global.HOSTNAME = os.hostname();
 global._ = require("lodash");
+
 // get default config
-const defaultConfig = require("./configs/defaults");
-//overwrite it
-global.CONFIG = _.assign({}, defaultConfig, (require("./configs/" + HOSTNAME)));
+global.CONFIG = require("./configs/defaults");
+if (fs.existsSync("./configs/" + HOSTNAME))
+    global.CONFIG = require("./configs/" + HOSTNAME);
 
 /*
  * Create a logger
