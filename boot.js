@@ -7,7 +7,7 @@ global._ = require("lodash");
 
 // get default config
 global.CONFIG = require("./configs/defaults");
-if (fs.existsSync("./configs/" + HOSTNAME))
+if (fs.existsSync("./configs/" + HOSTNAME + ".js"))
     global.CONFIG = require("./configs/" + HOSTNAME);
 
 /*

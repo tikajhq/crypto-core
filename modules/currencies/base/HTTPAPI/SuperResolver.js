@@ -5,7 +5,7 @@ const HTTPXRP = require("./../HTTPAPI/HTTPXRP");
 const BlockCypher = require("./../HTTPAPI/BlockCypher");
 
 
-const AVAILABLE_RESOLVERS = [BlockCypher, ChainSo, CryptoID, HTTPQTUM, HTTPXRP];
+const AVAILABLE_RESOLVERS = [BlockCypher, CryptoID, HTTPQTUM, HTTPXRP, ChainSo];
 
 class SuperResolver {
 

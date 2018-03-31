@@ -83,7 +83,7 @@ class Ripple extends Currency {
         });
 
         this.api.connect().then(() => {
-            cb();
+            cb && cb();
             // this.api.getServerInfo()
         }).catch(console.error);
     }
@@ -95,14 +95,14 @@ class Ripple extends Currency {
 
     getBalance(walletAddress, cb) {
         return this.api.getAccountInfo(walletAddress).then(info => {
-            cb(null, info.xrpBalance)
+            cb && cb(null, info.xrpBalance)
         }).catch(cb);
 
     }
 
     submitRawTransaction(txID, signedTransaction, cb) {
         this.api.submit(signedTransaction).then((message) => {
-            cb || cb(null, message);
+            cb && cb(null, message);
             this.logTx("debug", txID, message);
         }).catch((err) => {
             this.logTx("error", txID, err);

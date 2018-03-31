@@ -4,3 +4,4 @@ package-lock.json
 dev/docs/_site
 dev/docs/.sass-cache
 dev/docs/Gemfile.lock
+configs/secrets.js
