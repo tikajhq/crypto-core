@@ -1,4 +1,4 @@
-image: jekyll:jekyll
+image: starefossen/ruby-node
 
 variables:
   JEKYLL_ENV: production
