@@ -20,12 +20,13 @@ test:
 pages:
   stage: deploy
   script:
-  - bundle exec jekyll build -d ./../../public
-  - cd ../../
-  - cp www public/ -r
   - npm install
   - npm -g install mocha mochawesome
   - bash test.sh
+  - bundle exec jekyll build -d ./../../public
+  - cd ../../
+  - cp www public/ -r
+
 
   artifacts:
     paths:
