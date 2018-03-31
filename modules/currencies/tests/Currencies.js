@@ -1,8 +1,11 @@
+LOG_LEVEL = "debug";
+require("../../../boot");
+
 const forEach = require('mocha-each');
 let assert = require('assert');
 
-['xrp', 'doge'].forEach(currency_name => {
-    const Currency = require("./" + currency_name);
+["btc", "xrp", "dash", "doge", "qtum", "dgb", "ltc"].forEach(currency_name => {
+    const Currency = require("./../crypto/" + currency_name);
     describe(currency_name, function () {
         describe('#generateWallet', function () {
             let crypt = new Currency();
@@ -25,11 +28,20 @@ let assert = require('assert');
 
         });
 
-        describe("Should have valid networkInfo");
-        describe("Should have 0 send validation.");
-        describe("wait for confirmation"); //take an incoming tx, add to list, wait for confirmation.
-
+        // describe("Should have valid networkInfo");
+        // describe("Should have 0 send validation.");
+        // describe("wait for confirmation"); //take an incoming tx, add to list, wait for confirmation.
 
 
     });
+});
+
+
+after((done) => {
+    //auto exit after 10secs once tests is finished
+    setTimeout(() => {
+        process.exit(0)
+    }, 10000);
+    //done is called so that other hooks are executed. 10s is provided to them !
+    done();
 });

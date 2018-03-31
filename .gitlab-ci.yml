@@ -1,4 +1,4 @@
-image: ruby:2.3
+image: jekyll:jekyll
 
 variables:
   JEKYLL_ENV: production
@@ -23,6 +23,10 @@ pages:
   - bundle exec jekyll build -d ./../../public
   - cd ../../
   - cp www public/ -r
+  - npm install
+  - npm -g install mocha mochawesome
+  - bash test.sh
+
   artifacts:
     paths:
     - public

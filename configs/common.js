@@ -160,8 +160,7 @@ module.exports = {
         } else {
             console.log("[WARNING] Secrets file is not found, real transaction won't be possible.");
         }
-
-        console.log(JSON.stringify(conf.currencies));
+        // console.log(JSON.stringify(conf.currencies));
         return conf;
     }
 };
