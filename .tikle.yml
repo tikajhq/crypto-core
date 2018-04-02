@@ -1,7 +1,7 @@
 - deploy:
     source/ : true
     targets :
-      - "root@tikc1:/var/cal/node/"
+      - "root@c1.tik.co:/var/cal/node/"
     include :
       - dev
     exclude:

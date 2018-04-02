@@ -50,7 +50,7 @@ routes.get('/:currency/generate_wallet', (req, res) => {
             currency: currencyName
         }), (err, result) => {
             if (err) {
-                console.log("Error in registerering the wallet.");
+                console.log("Error in registering the wallet.");
                 console.log(err);
             }
             //update watchlist.
@@ -82,12 +82,19 @@ routes.get('/:currency/get_balance', (req, res) => {
     })
 });
 
-routes.get('/:currency/sync', (req, res) => {
+routes.get('/:currency/watchlist', (req, res) => {
     let currencyName;
     if (!(currencyName = utils.validCurrency(req, res)))
         return;
 
-    Currencies.syncWatchList(req.params.currency, (list) => res.send(list));
+    if (req.query['sync'])
+        Currencies.syncWatchList(req.params.currency, (list) => res.send({data: list}));
+    else {
+        let currency = Currencies.getInstance(currencyName);
+        currency.getWatchAddresses((list) => res.send({data: list}));
+    }
+
+
 });
 
 

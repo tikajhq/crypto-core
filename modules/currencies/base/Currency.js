@@ -88,6 +88,10 @@ class Currency {
         this._syncWatchAddressList();
     }
 
+    getWatchAddresses(cb) {
+        return cb(this.watchAddresses);
+    }
+
     /**
      * To be called for unconfirmed transactions.
      */
