@@ -4,8 +4,9 @@ module.exports = {
 
     getConfig: (config) => {
         let CORE_SERVER_1 = config.server_1 || "10.8.0.31";
+        let CORE_SERVER_2 = config.server_2 || "10.8.0.6";
         let conf = {
-            AVAILABLE_CURRENCIES: ["btc", "xrp", "dash", "doge", "qtum", "dgb", "ltc"],
+            AVAILABLE_CURRENCIES: ["btc", "xrp", "dash", "doge", "qtum", "dgb", "ltc", "mona"],
             NODE_SERVER: "c1.tik.co",
             NODE_VHOST: "/crypto",
 
@@ -97,21 +98,7 @@ module.exports = {
                         }
                     ]
                 },
-                eth: {
-                    core_host: CORE_SERVER_1,
-                    core_port: 8332,
-                    primaryWallet: 0,
-                    wallets: [
-                        {
-                            address: "",
 
-                        },
-                        {
-                            address: "",
-
-                        }
-                    ]
-                },
                 ltc: {
                     core_host: CORE_SERVER_1,
                     core_port: 9332,
@@ -125,6 +112,46 @@ module.exports = {
                         }
                     ]
                 },
+                mona: {
+                    core_host: CORE_SERVER_2,
+                    core_port: 9402,
+                    primaryWallet: 0,
+                    wallets: [
+                        {
+                            address: "MCAXaTp6QJqEmN8TkPZrgUApBWX2dUVz8F",
+                        }, {
+                            address: "MW9bHiezzVNbvNSertj29o1VZWiP4Emt6Y",
+                        }
+                    ]
+                },
+                ppc: {
+                    core_host: CORE_SERVER_2,
+                    core_port: 9901,
+                    primaryWallet: 0,
+                    wallets: [
+                        {
+                            address: "",
+                        }, {
+                            address: "",
+                        }
+                    ]
+                },
+                xmr: {
+                    core_host: CORE_SERVER_2,
+                    core_port: 8332,
+                    primaryWallet: 0,
+                    wallets: [
+                        {
+                            address: "",
+
+                        },
+                        {
+                            address: "",
+
+                        }
+                    ]
+                },
+
                 // tik:{
                 //     core: CORE_SERVER,
                 //     primaryWallet: 0,
