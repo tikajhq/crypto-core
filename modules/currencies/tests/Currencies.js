@@ -4,7 +4,7 @@ require("../../../boot");
 const forEach = require('mocha-each');
 let assert = require('assert');
 
-["btc", "xrp", "dash", "doge", "qtum", "dgb", "ltc"].forEach(currency_name => {
+["btc", "xrp", "dash", "doge", "qtum", "dgb", "ltc", "mona"].forEach(currency_name => {
     const Currency = require("./../crypto/" + currency_name);
     describe(currency_name, function () {
         describe('#generateWallet', function () {

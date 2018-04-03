@@ -7,7 +7,7 @@ let assert = require('assert');
 let expect = require("chai").expect;
 
 
-(["ChainSo", 'CryptoID', "HTTPQTUM", "BlockCypher"]).forEach(name => {
+(["ChainSo", 'CryptoID', "HTTPQTUM", "BlockCypher", "HTTPMONA"]).forEach(name => {
     const HTTPAPI = require("./../base/HTTPAPI/" + name);
 
     describe('# ' + name, function () {
