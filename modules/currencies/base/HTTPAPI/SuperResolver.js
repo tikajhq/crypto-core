@@ -2,10 +2,11 @@ const ChainSo = require("./../HTTPAPI/ChainSo");
 const CryptoID = require("./../HTTPAPI/CryptoID");
 const HTTPQTUM = require("./../HTTPAPI/HTTPQTUM");
 const HTTPXRP = require("./../HTTPAPI/HTTPXRP");
+const HTTPMONA = require("./../HTTPAPI/HTTPMONA");
 const BlockCypher = require("./../HTTPAPI/BlockCypher");
 
 
-const AVAILABLE_RESOLVERS = [BlockCypher, CryptoID, HTTPQTUM, HTTPXRP, ChainSo];
+const AVAILABLE_RESOLVERS = [BlockCypher, CryptoID, HTTPQTUM, HTTPXRP, HTTPMONA, ChainSo];
 
 class SuperResolver {
 

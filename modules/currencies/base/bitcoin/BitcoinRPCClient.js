@@ -1,7 +1,7 @@
 'use strict';
 
-var http = require('http');
-var https = require('https');
+let http = require('http');
+let https = require('https');
 
 function RpcClient(opts) {
     opts = opts || {};
@@ -9,11 +9,13 @@ function RpcClient(opts) {
     this.port = opts.port || 8332;
     this.user = opts.user || 'user';
     this.pass = opts.pass || 'pass';
+    this.path = opts.path || '/';
+    this.auth = opts.auth || true;
     this.protocol = opts.protocol === 'http' ? http : https;
     this.batchedCalls = null;
     this.disableAgent = opts.disableAgent || false;
 
-    var isRejectUnauthorized = typeof opts.rejectUnauthorized !== 'undefined';
+    let isRejectUnauthorized = typeof opts.rejectUnauthorized !== 'undefined';
     this.rejectUnauthorized = isRejectUnauthorized ? opts.rejectUnauthorized : true;
 
     if (RpcClient.config.log) {
@@ -24,9 +26,9 @@ function RpcClient(opts) {
 
 }
 
-var cl = console.log.bind(console);
+let cl = console.log.bind(console);
 
-var noop = function () {
+let noop = function () {
 };
 
 RpcClient.loggers = {
@@ -39,15 +41,16 @@ RpcClient.config = {
     logger: 'normal' // none, normal, debug
 };
 
-function rpc(request, callback) {
+function rpc(request, callback, path) {
 
-    var self = this;
+    let self = this;
     request = JSON.stringify(request);
-    var auth = new Buffer(self.user + ':' + self.pass).toString('base64');
+    let auth = new Buffer(self.user + ':' + self.pass).toString('base64');
 
-    var options = {
+    // console.log(request);
+    let options = {
         host: self.host,
-        path: '/',
+        path: path || self.path,
         method: 'POST',
         port: self.port,
         rejectUnauthorized: self.rejectUnauthorized,
@@ -55,18 +58,18 @@ function rpc(request, callback) {
     };
 
     if (self.httpOptions) {
-        for (var k in self.httpOptions) {
+        for (let k in self.httpOptions) {
             options[k] = self.httpOptions[k];
         }
     }
 
-    var called = false;
+    let called = false;
 
-    var errorMessage = 'Bitcoin JSON-RPC: ';
+    let errorMessage = 'Bitcoin JSON-RPC: ';
 
-    var req = this.protocol.request(options, function (res) {
+    let req = this.protocol.request(options, function (res) {
 
-        var buf = '';
+        let buf = '';
         res.on('data', function (data) {
             buf += data;
         });
@@ -87,20 +90,20 @@ function rpc(request, callback) {
                 return;
             }
             if (res.statusCode === 500 && buf.toString('utf8') === 'Work queue depth exceeded') {
-                var exceededError = new Error('Bitcoin JSON-RPC: ' + buf.toString('utf8'));
+                let exceededError = new Error('Bitcoin JSON-RPC: ' + buf.toString('utf8'));
                 exceededError.code = 429; // Too many requests
                 callback(exceededError);
                 return;
             }
 
-            var parsedBuf;
+            let parsedBuf;
             try {
                 parsedBuf = JSON.parse(buf);
             } catch (e) {
                 self.log.err(e.stack);
                 self.log.err(buf);
                 self.log.err('HTTP Status code:' + res.statusCode);
-                var err = new Error(errorMessage + 'Error Parsing JSON: ' + e.message);
+                let err = new Error(errorMessage + 'Error Parsing JSON: ' + e.message);
                 callback(err);
                 return;
             }
@@ -121,7 +124,8 @@ function rpc(request, callback) {
 
     req.setHeader('Content-Length', request.length);
     req.setHeader('Content-Type', 'application/json');
-    req.setHeader('Authorization', 'Basic ' + auth);
+    if (self.auth)
+        req.setHeader('Authorization', 'Basic ' + auth);
     req.write(request);
     req.end();
 }
@@ -131,6 +135,15 @@ RpcClient.prototype.batch = function (batchCallback, resultCallback) {
     batchCallback();
     rpc.call(this, this.batchedCalls, resultCallback);
     this.batchedCalls = null;
+};
+
+RpcClient.prototype.rawCall = function (path, methodName, params, cb) {
+
+    return rpc.call(this, {
+        method: methodName,
+        params: params,
+        id: getRandomId()
+    }, cb, path);
 };
 
 RpcClient.callspec = {
@@ -221,9 +234,10 @@ RpcClient.callspec = {
     walletLock: '',
     walletPassPhrase: 'string int',
     walletPassphraseChange: '',
+    get_transaction_pool: 'obj'
 };
 
-var slice = function (arr, start, end) {
+let slice = function (arr, start, end) {
     return Array.prototype.slice.call(arr, start, end);
 };
 
@@ -232,13 +246,13 @@ function generateRPCMethods(constructor, apiCalls, rpc) {
     function createRPCMethod(methodName, argMap) {
         return function () {
 
-            var limit = arguments.length - 1;
+            let limit = arguments.length - 1;
 
             if (this.batchedCalls) {
                 limit = arguments.length;
             }
 
-            for (var i = 0; i < limit; i++) {
+            for (let i = 0; i < limit; i++) {
                 if (argMap[i]) {
                     arguments[i] = argMap[i](arguments[i]);
                 }
@@ -262,7 +276,7 @@ function generateRPCMethods(constructor, apiCalls, rpc) {
         };
     };
 
-    var types = {
+    let types = {
         str: function (arg) {
             return arg.toString();
         },
@@ -283,16 +297,21 @@ function generateRPCMethods(constructor, apiCalls, rpc) {
         }
     };
 
-    for (var k in apiCalls) {
-        var spec = apiCalls[k].split(' ');
-        for (var i = 0; i < spec.length; i++) {
-            if (types[spec[i]]) {
+    for (let k in apiCalls) {
+
+
+        let spec = apiCalls[k].split(' ');
+
+        //iterate over each spec
+        for (let i = 0; i < spec.length; i++) {
+            if (types[spec[i]])
                 spec[i] = types[spec[i]];
-            } else {
+            else
+            //default to str
                 spec[i] = types.str;
-            }
         }
-        var methodName = k.toLowerCase();
+
+        let methodName = k.toLowerCase();
         constructor.prototype[k] = createRPCMethod(methodName, spec);
         constructor.prototype[methodName] = constructor.prototype[k];
     }

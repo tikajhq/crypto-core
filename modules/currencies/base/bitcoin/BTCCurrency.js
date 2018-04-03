@@ -1,5 +1,4 @@
 const Currency = require("./../../base/Currency");
-const RPCService = require("./../../base/bitcoin/RPCService");
 const SuperResolver = require("../../base/HTTPAPI/SuperResolver");
 
 let bitcoinjs = require('bitcoinjs-lib');
