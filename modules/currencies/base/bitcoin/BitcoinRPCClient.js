@@ -3,6 +3,9 @@
 let http = require('http');
 let https = require('https');
 
+//ignore all https errors
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
 function RpcClient(opts) {
     opts = opts || {};
     this.host = opts.host || '127.0.0.1';
@@ -56,6 +59,7 @@ function rpc(request, callback, path) {
         rejectUnauthorized: self.rejectUnauthorized,
         agent: self.disableAgent ? false : undefined
     };
+    // console.log("REJECT "+self.rejectUnauthorized);
 
     if (self.httpOptions) {
         for (let k in self.httpOptions) {
@@ -70,11 +74,11 @@ function rpc(request, callback, path) {
     let req = this.protocol.request(options, function (res) {
 
         let buf = '';
-        res.on('data', function (data) {
+        res.on('data', (data) => {
             buf += data;
         });
 
-        res.on('end', function () {
+        res.on('end', () => {
 
             if (called) {
                 return;
@@ -113,7 +117,7 @@ function rpc(request, callback, path) {
         });
     });
 
-    req.on('error', function (e) {
+    req.on('error', (e) => {
         console.log("[" + this.currency + "] COULDN'T GET NEW TX, NODE DOWN ? Please check. Below is error. ");
         console.log(e.message);
         if (!called) {

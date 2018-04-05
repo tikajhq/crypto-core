@@ -27,7 +27,7 @@ class Currency {
         this.healthStore = {
             currency: this.notation,
             "status": 0, //maximum 100
-            "history": getArrayWithLimitedLength(30)
+            "history": getArrayWithLimitedLength(60)
         };
         //add connected cores info here.
         this.coresInfo = [];
@@ -49,8 +49,11 @@ class Currency {
         let average = (_.meanBy(this.healthStore.history));
         if (average === 0)
             status = 0;
+        else if (average < 0.5)
+            status = 50;
         else
             status = 100;
+
         this.healthStore.status = status;
         this.emit("health_updates", this.healthStore)
     }
