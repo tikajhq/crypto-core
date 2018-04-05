@@ -13,10 +13,11 @@ let RefreshService = {
     ratesData: {},
     enabledRates: {},
     updateRates: function () {
-        console.log("Syncing rates...");
+
         rp(this.APIEndpoint + "?limit=" + this.CURRENCY_LIMITS + "&convert=inr")
             .then((data) => {
-                console.log("Pulled.");
+                console.log("Synced rates.");
+                // console.log("Pulled.");
                 //todo: save in db.
                 data = JSON.parse(data);
                 DB.collection('rates').insertOne({data, timestamp: +(new Date())});
