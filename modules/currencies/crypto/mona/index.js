@@ -18,7 +18,7 @@ class MONA extends Currency {
                 port: this.CurrencyConfig.core_port,
             }
         }, cb);
-        this.fee = 0.0002;
+        this.fee = 0.001;
         this.networkInfo.messagePrefix = "\x18Monacoin Signed Message\n"
     }
 }
