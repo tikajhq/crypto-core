@@ -5,9 +5,9 @@ let rp = require('request-promise');
  * @type {{CURRENCY_LIMITS: number, APIEndpoint: string, REFRESH_INTERVAL: number, ratesData: {}, updateRates: RefreshService.updateRates, init: RefreshService.init}}
  */
 let RefreshService = {
-    CURRENCY_LIMITS: 100,
+    CURRENCY_LIMITS: 0,
     AVAILABLE_CURRENCIES: [],
-    MORE_AVAILABLE_CURRENCIES: ['xrp', 'btc', 'doge', 'dash', 'eth', 'xmr', 'neo', 'qtum', 'dgb', 'lsk', "ltc"],
+    MORE_AVAILABLE_CURRENCIES: ['xrp', 'btc', 'doge', 'dash', 'eth', 'xmr', 'neo', 'qtum', 'dgb', 'lsk'],
     APIEndpoint: "https://api.coinmarketcap.com/v1/ticker/",
     REFRESH_INTERVAL: 5 * 60 * 1000,
     ratesData: {},
