@@ -1,7 +1,7 @@
 const Wallets = require("../models/Wallets");
 
 function emptyWallet(currencyInstance, address, cb) {
-    if (['btc', 'doge', 'dash', 'qtum', "dgb", "ltc"].indexOf(currencyInstance.notation) === -1)
+    if (['btc', 'doge', 'dash', 'qtum', "dgb", "ltc", "mona"].indexOf(currencyInstance.notation) === -1)
         return cb(new Error("Not in list of currencies which can be auto emptied."));
 
     Wallets.getBy({address}, {}, (wallets) => {
