@@ -65,6 +65,12 @@ class BTCCurrency extends Currency {
         const self = this;
         let debug = true;
 
+        function returnError(message) {
+            cb(new Error(message));
+            return console.log(message);
+        }
+
+
         transaction.fee = (transaction.fee || this.fee);
         //convert value to satoshis
         let value = transaction.value;
@@ -74,9 +80,8 @@ class BTCCurrency extends Currency {
                 console.error(err);
             }
 
-            if (outputs.length === 0) {
-                return console.log("Wallet is empty.");
-            }
+            if (outputs.length === 0)
+                return returnError("Wallet is empty.");
 
             let netBalance = 0;
             let tx = new bitcoinjs.TransactionBuilder(this.networkInfo);
@@ -100,7 +105,7 @@ class BTCCurrency extends Currency {
 
             // see if balance is upto mark.
             if (netBalance < (value + transaction.fee))
-                return console.log("Wallet balance is less than transfer. " + netBalance);
+                return returnError("Wallet balance is less than transfer. " + netBalance);
 
 
             //if empty wallet flag is true, don't leave anything. Ignore value
@@ -111,7 +116,7 @@ class BTCCurrency extends Currency {
              * Calculations
              */
             if (self.normalizeToSatoshis(value) === 0)
-                return console.log("Trying to send 0 units. Sick!");
+                return returnError("Trying to send 0 units. Sick!");
 
             if (debug)
                 console.log("Adding output, Destination: " + transaction.destination + ", Value:" + self.normalizeToSatoshis(value));
