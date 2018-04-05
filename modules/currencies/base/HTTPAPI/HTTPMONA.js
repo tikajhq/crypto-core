@@ -1,6 +1,6 @@
 const HTTPAPI = require("./HTTPAPI");
 
-class HTTPQTUM extends HTTPAPI {
+class HTTPMONA extends HTTPAPI {
     constructor(currency) {
         super(currency, {
             host: "https://mona.chainsight.info/api/",
@@ -42,6 +42,6 @@ class HTTPQTUM extends HTTPAPI {
 
 }
 
-HTTPQTUM.SUPPORTED_CURRENCIES = ["mona"];
+HTTPMONA.SUPPORTED_CURRENCIES = ["mona"];
 
-module.exports = HTTPQTUM;
+module.exports = HTTPMONA;
