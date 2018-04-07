@@ -6,7 +6,7 @@ module.exports = {
         let CORE_SERVER_1 = config.server_1 || "10.8.0.31";
         let CORE_SERVER_2 = config.server_2 || "10.8.0.6";
         let conf = {
-            AVAILABLE_CURRENCIES: ["btc", "xrp", "dash", "doge", "qtum", "dgb", "ltc", "mona"],
+            AVAILABLE_CURRENCIES: ["btc", "xrp", "dash", "doge", "qtum", "dgb", "ltc", "mona", "vtc", "blk", "eth"],
             NODE_SERVER: "c1.tik.co",
             NODE_VHOST: "/crypto",
 
@@ -24,6 +24,7 @@ module.exports = {
                     core_host: CORE_SERVER_1,
                     core_port: 5006,
                     primaryWallet: 0,
+                    fees: [0, 0, 0, 0, 0],
                     wallets: [
                         {
                             address: "rP2D9UygcwjmoX196ZtgYQNZKx1D6CEq8S",
@@ -37,6 +38,7 @@ module.exports = {
                     core_host: CORE_SERVER_1,
                     core_port: 8332,
                     primaryWallet: 0,
+                    fees: [0.0002],
                     wallets: [
                         {
                             address: "1F2gwhaPYeCWQV8jVpHsVpyuSVaLWEihrd",
@@ -50,6 +52,7 @@ module.exports = {
                     core_host: CORE_SERVER_1,
                     core_port: 22555,
                     primaryWallet: 0,
+                    fees: [0.5],
                     wallets: [
                         {
                             address: "D6CmZee6AMV5vxvmocVTqSPwZ3tob7cyNU",
@@ -63,6 +66,7 @@ module.exports = {
                     core_host: CORE_SERVER_1,
                     core_port: 9998,
                     primaryWallet: 0,
+                    fees: [0.0001],
                     wallets: [
                         {
                             address: "XmLiiUxL7LqDNusXPuKxTdW4b495QhPeGU",
@@ -76,6 +80,7 @@ module.exports = {
                     core_host: CORE_SERVER_1,
                     core_port: 3889,
                     primaryWallet: 0,
+                    fees: [0.01],
                     wallets: [
                         {
                             address: "QfRecS1JK6i1QgF5wDEpGSYePedVVk2U8H",
@@ -90,6 +95,7 @@ module.exports = {
                     core_host: CORE_SERVER_1,
                     core_port: 14022,
                     primaryWallet: 0,
+                    fees: [0.00001],
                     wallets: [
                         {
                             address: "DEM4xWxcUEJ5av6FtSvGGLoZfNbkPk8DPb",
@@ -103,6 +109,7 @@ module.exports = {
                     core_host: CORE_SERVER_1,
                     core_port: 9332,
                     primaryWallet: 0,
+                    fees: [0.0002],
                     wallets: [
                         {
                             address: "LMCxC3RX9rHmSqWp1G9dRRjyZM4iNWdzg2",
@@ -116,6 +123,7 @@ module.exports = {
                     core_host: CORE_SERVER_2,
                     core_port: 9402,
                     primaryWallet: 0,
+                    fees: [0.001],
                     wallets: [
                         {
                             address: "MCAXaTp6QJqEmN8TkPZrgUApBWX2dUVz8F",
@@ -124,10 +132,39 @@ module.exports = {
                         }
                     ]
                 },
-                ppc: {
+                vtc: {
                     core_host: CORE_SERVER_2,
-                    core_port: 9901,
+                    core_port: 5888,
                     primaryWallet: 0,
+                    fees: [0.001],
+                    wallets: [
+                        {
+                            address: "Va8yvV1HPjYTYhE5brWn7n6hDtVDxgz6TZ",
+                        }, {
+                            address: "Vq7ALwnBnAwR68G3KzfEqBc6qQTci5A3Lh",
+                        }
+                    ]
+                },
+                eth: {
+                    core_host: CORE_SERVER_2,
+                    core_port: 8332,
+                    primaryWallet: 0,
+                    fees: [0.0000000000001],
+                    wallets: [
+                        {
+                            address: "0x7a71c07d3695a81cb9d622166fad031d1908df4b",
+                        },
+                        {
+                            address: "0x75f110d3f8651bceb493f22fbec6f6dad0c9e5a5",
+                        }
+                    ]
+                },
+
+                blk: {
+                    core_host: CORE_SERVER_2,
+                    core_port: 15716,
+                    primaryWallet: 0,
+                    fees: [],
                     wallets: [
                         {
                             address: "",
@@ -136,18 +173,43 @@ module.exports = {
                         }
                     ]
                 },
-                xmr: {
+                dcr: {
                     core_host: CORE_SERVER_2,
-                    core_port: 8332,
+                    core_port: 9107,
                     primaryWallet: 0,
+                    fees: [],
                     wallets: [
                         {
                             address: "",
-
+                        }, {
+                            address: "",
+                        }
+                    ]
+                },
+                nmc: {
+                    core_host: CORE_SERVER_2,
+                    core_port: 8336,
+                    primaryWallet: 0,
+                    fees: [],
+                    wallets: [
+                        {
+                            address: "",
+                        }, {
+                            address: "",
+                        }
+                    ]
+                },
+                ppc: {
+                    core_host: CORE_SERVER_2,
+                    core_port: 9903,
+                    primaryWallet: 0,
+                    fees: [],
+                    wallets: [
+                        {
+                            address: "",
                         },
                         {
                             address: "",
-
                         }
                     ]
                 },
