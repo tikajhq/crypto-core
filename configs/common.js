@@ -24,7 +24,7 @@ module.exports = {
                     core_host: CORE_SERVER_1,
                     core_port: 5006,
                     primaryWallet: 0,
-                    fees: [0, 0, 0, 0, 0],
+                    fees: [0],
                     wallets: [
                         {
                             address: "rP2D9UygcwjmoX196ZtgYQNZKx1D6CEq8S",
