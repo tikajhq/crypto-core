@@ -15,7 +15,6 @@ class LTC extends Currency {
                 port: this.CurrencyConfig.core_port,
             }
         }, cb);
-        this.fee = 0.0002;
         this.networkInfo.messagePrefix = "\x18Litecoin Signed Message:\n"
     }
 }

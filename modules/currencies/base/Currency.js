@@ -68,6 +68,12 @@ class Currency {
     }
 
 
+    getFee(transaction) {
+        if (transaction.fee)
+            return transaction.fee;
+        return this.CurrencyConfig.fees[0];
+    }
+
     _syncWatchAddressList() {
         //add primary wallet to list.
         this.watchAddresses[this.primaryWallet.address] = 1;

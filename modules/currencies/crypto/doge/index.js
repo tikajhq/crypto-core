@@ -14,7 +14,6 @@ class Doge extends Currency {
                 port: this.CurrencyConfig.core_port,
             }
         }, cb);
-        this.fee = 0.5;
         this.networkInfo.messagePrefix = '\x19Dogecoin Signed Message:\n';
     }
 }

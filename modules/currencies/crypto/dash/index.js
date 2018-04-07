@@ -14,7 +14,6 @@ class DASH extends Currency {
                 port: this.CurrencyConfig.core_port,
             }
         }, cb);
-        this.fee = 0.0001;
         this.networkInfo.messagePrefix = '\x18DarkCoin Signed Message:\n';
     }
 }

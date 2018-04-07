@@ -15,7 +15,6 @@ class QTUM extends Currency {
                 port: this.CurrencyConfig.core_port,
             }
         }, cb);
-        this.fee = 0.01;
         this.networkInfo.messagePrefix = "\x19Qtum Signed Message:\n";
     }
 }

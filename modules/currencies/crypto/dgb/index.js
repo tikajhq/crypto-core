@@ -14,7 +14,6 @@ class DGB extends Currency {
                 port: this.CurrencyConfig.core_port,
             }
         }, cb);
-        this.fee = 0.00001;
         this.networkInfo.messagePrefix = '\x19DigiByte Signed Message:\n';
 
     }

@@ -71,7 +71,7 @@ class BTCCurrency extends Currency {
         }
 
 
-        transaction.fee = (transaction.fee || this.fee);
+        transaction.fee = this.getFee(transaction);
         //convert value to satoshis
         let value = transaction.value;
         this.HTTPAPI.getUTXO(transaction.source.address, (err, outputs) => {
