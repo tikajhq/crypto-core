@@ -34,7 +34,7 @@ wss.on('connection', (ws) => {
                 ws.send(JSON.stringify(arguments));
         } catch (e) {
             console.log(e);
-            cleanUP();
+            unsubscribeAll();
         }
     }
 
@@ -43,7 +43,7 @@ wss.on('connection', (ws) => {
         return false;
     }
 
-    function cleanUP() {
+    function unsubscribeAll() {
         logger.debug("Removing listeners");
         Object.keys(subscriptionList).forEach((index) => {
             logger.debug("Removing listener " + index);
@@ -99,6 +99,10 @@ wss.on('connection', (ws) => {
                     currency.on(message.params.event, subscriptionList[key].listener);
                     send({result: "binded", to: currency.notation, "event": message.params.event});
                 });
+                break;
+            case "unsubscribe":
+                unsubscribeAll();
+                send({result: "unsubscribed"});
                 break;
             default:
                 logger.debug("Unknown type.")
