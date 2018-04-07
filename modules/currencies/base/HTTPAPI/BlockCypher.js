@@ -25,6 +25,9 @@ class BlockCypher extends HTTPAPI {
     }
 
     getUTXO(address, cb) {
+        //no utxo for eth
+        if (this.notation === "eth")
+            return cb(null, []);
         return this.makeAPICall('get_unspent', {address}, (err, response) => {
             if (err || response.error)
                 return cb(err);
@@ -44,6 +47,6 @@ class BlockCypher extends HTTPAPI {
 
 }
 
-BlockCypher.SUPPORTED_CURRENCIES = ['btc', 'ltc', 'doge'];
+BlockCypher.SUPPORTED_CURRENCIES = ['btc', 'ltc', 'doge', "eth"];
 
 module.exports = BlockCypher;

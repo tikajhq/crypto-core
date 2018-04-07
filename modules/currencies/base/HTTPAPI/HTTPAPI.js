@@ -2,6 +2,7 @@ const request = require("request");
 
 class HTTPAPI {
     constructor(notation, config) {
+        this.notation = notation.toLowerCase();
         this.APIHost = config.host || 'https://blockchain.info/';
         this.endpoints = config.endpoints;
         this.endparam = config.endparam || "";

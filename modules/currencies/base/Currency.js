@@ -64,7 +64,7 @@ class Currency {
     }
 
     logTx(level, txID, messages) {
-        logger.log(level, {txID, messages})
+        console.log(level, {txID, messages})
     }
 
 
@@ -99,8 +99,19 @@ class Currency {
      * To be called for unconfirmed transactions.
      */
     onUTXO(tx, rawtx) {
+        //testing
+
+        // if(this.tickIncomingCounter<10)
+        //     console.log(rawtx);
+        // for all
+        // this.waitForConfirmation(tx, rawtx);
+
+        //end testing
+
         this.emit("incoming_tx", tx, rawtx);
         this.tickIncomingCounter++;
+
+
         if (tx.to) {
             //check for all to
             for (let i = 0; i < tx.to.length; ++i) {
