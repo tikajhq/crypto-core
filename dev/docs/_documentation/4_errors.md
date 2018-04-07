@@ -13,10 +13,3 @@ position: 4
 | 403  | Forbidden   | We couldn't authenticate you        |
 
 All errors will return JSON in the following format:
-
-~~~ json
-{
-  "error": true,
-  "message": "error message here"
-}
-~~~
