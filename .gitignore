@@ -2,6 +2,7 @@
 yarn.lock
 package-lock.json
 dev/docs/_site
+dev/docs/_documentation/5_currencies.md
 dev/docs/.sass-cache
 dev/docs/Gemfile.lock
 configs/secrets.js

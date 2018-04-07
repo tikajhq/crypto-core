@@ -164,11 +164,12 @@ module.exports = {
                     core_host: CORE_SERVER_2,
                     core_port: 15716,
                     primaryWallet: 0,
-                    fees: [],
+                    fees: [0.0002],
                     wallets: [
                         {
                             address: "",
-                        }, {
+                        },
+                        {
                             address: "",
                         }
                     ]
