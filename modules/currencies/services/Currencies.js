@@ -13,6 +13,7 @@ let Currencies = {
         currenciesList.forEach((currencyName) => {
             let Currency = require(path.join(__dirname, "/../crypto", currencyName));
             let currency = new Currency({}, () => {
+                // console.log(currency)
                 //setup basic info for API
                 currency.listenForIncomingTX();
             });
