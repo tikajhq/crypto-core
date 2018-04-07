@@ -42,5 +42,10 @@ https://github.com/digital-dreamer/blockchain-programming/wiki/How-to-run-a-full
 - *Client:* `Monero`
 - *Ports:* 18081/rpc 
 
+
+##### Litecoin/LTC
+- *Client:* `Bitcoin`
+- *Ports:* 9333/rpc 
+
 - neo
 - LISK

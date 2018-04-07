@@ -6,7 +6,7 @@ module.exports = {
         let CORE_SERVER_1 = config.server_1 || "10.8.0.31";
         let CORE_SERVER_2 = config.server_2 || "10.8.0.6";
         let conf = {
-            AVAILABLE_CURRENCIES: ["btc", "xrp", "dash", "doge", "qtum", "dgb", "ltc", "mona", "vtc", "blk", "eth"],
+            AVAILABLE_CURRENCIES: ["btc", "xrp", "dash", "doge", "qtum", "dgb", "ltc", "mona", "vtc", "eth", "blk"],
             NODE_SERVER: "c1.tik.co",
             NODE_VHOST: "/crypto",
 
