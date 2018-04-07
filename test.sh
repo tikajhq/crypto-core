@@ -6,6 +6,8 @@ test(){
   sleep 2
 }
 
+test ConfigChecks
 test HTTPAPIs
 test Currencies
 test SuperResolver
+

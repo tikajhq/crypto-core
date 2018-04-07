@@ -133,7 +133,7 @@ class ETH extends Currency {
         let payment = {
             nonce: this.web3.utils.toHex(0),
             gasPrice: this.web3.utils.toHex(20000000000),
-            gasLimit: this.web3.utils.toHex(this.getFee(transaction)),
+            gasLimit: this.web3.utils.toHex(this.getFee(transaction) * WEI),
             to: transaction.destination,
             value: this.web3.utils.toHex(value),
             data: '0xc0de'
