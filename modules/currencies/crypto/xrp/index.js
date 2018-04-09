@@ -135,7 +135,7 @@ class Ripple extends Currency {
             }
         };
         if (transaction.tag)
-            payment.destination['tag'] = transaction.tag.match(/\d+/g).map(Number);
+            payment.destination['tag'] = transaction.tag.match(/\d+/g).map(Number)[0];
 
         this.logTx("debug", txID, payment);
         return api.preparePayment(transaction.source.address, payment, instructions).then(prepared => {
