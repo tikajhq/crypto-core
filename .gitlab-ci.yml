@@ -13,18 +13,28 @@ test:
   script:
   - cd dev/docs
   - bundle exec jekyll build -d ./../../test
+  - cd ../../
+  - npm install
+  - npm -g install mocha mochawesome nyc
+  - bash test.sh
+
   artifacts:
     paths:
-    - test
+    - dev          # preserve dev for pages
+    - node_modules # preserve node_modules for test_coverage
   except:
   - master
+
+
+test_coverage:
+  stage: test
+  script:
+    - nyc mocha ./modules/currencies/tests/*.js
+
 
 pages:
   stage: deploy
   script:
-  - npm install
-  - npm -g install mocha mochawesome
-  - bash test.sh
   - cd dev/docs
   - bundle exec jekyll build -d ./../../public
   - cd ../../
