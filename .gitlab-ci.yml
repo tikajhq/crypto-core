@@ -8,7 +8,19 @@ before_script:
   - bundle install
   - cd ../../
 
-test:
+
+test:pages:
+  stage: test
+  script:
+  - cd dev/docs
+  - bundle exec jekyll build -d ./../../test
+  - cd ../../
+  except:
+  - master
+
+
+
+test:node:
   stage: test
   script:
   - cd dev/docs
@@ -26,11 +38,13 @@ test:
   - master
 
 
-test_coverage:
-  stage: test
+test:coverage:
+  stge: test
   script:
+    - npm install
+    - npm -g install mocha mochawesome nyc
     - nyc mocha ./modules/currencies/tests/*.js
-
+  coverage: '/^Statements\s+:\s(\d+(?:\.\d+)?%)/'
 
 pages:
   stage: deploy
@@ -44,5 +58,7 @@ pages:
   artifacts:
     paths:
     - public
+  dependencies:
+    - test:node
   only:
   - master
