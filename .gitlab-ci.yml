@@ -3,6 +3,10 @@ image: starefossen/ruby-node
 variables:
   JEKYLL_ENV: production
 
+stages:
+  - test
+  - deploy
+
 before_script:
   - cd dev/docs
   - bundle install
@@ -43,7 +47,7 @@ test:coverage:
   script:
     - npm install
     - npm -g install mocha mochawesome nyc
-    - nyc mocha ./modules/currencies/tests/*.js
+    - nyc mocha ./modules/currencies/tests/*.js --timeout=20000
   coverage: '/^Statements\s+:\s(\d+(?:\.\d+)?%)/'
 
 pages:
