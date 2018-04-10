@@ -1,6 +1,8 @@
 LOG_LEVEL = "debug";
 require("../../../boot");
-global['CORRUPT_BLOCKCYPHER'] = true;
+
+if (process.env['CORRUPT'])
+    global['CORRUPT_BLOCKCYPHER'] = true;
 
 const forEach = require('mocha-each');
 let assert = require('assert');

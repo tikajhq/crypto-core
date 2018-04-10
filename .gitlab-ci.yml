@@ -36,10 +36,13 @@ test:coverage:
   stage: test
   script:
     - npm install
-    - npm -g install mocha nyc
-    - nyc mocha ./modules/currencies/tests/*.js --timeout=20000 || true
+    - npm -g install mocha istanbul
+    - istanbul cover _mocha ./modules/currencies/tests/*.js --timeout=20000 || true
+    - mv coverage dev/docs/coverage
   coverage: '/^Statements\s+:\s(\d+(?:\.\d+)?%)/'
-
+  artifacts:
+    paths:
+    - dev/docs/coverage          # preserve dev for pages
 
 
 pages:
@@ -55,5 +58,7 @@ pages:
     - public
   dependencies:
     - test:node
+    - test:coverage
+
   only:
   - master
