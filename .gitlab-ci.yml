@@ -8,49 +8,41 @@ stages:
   - deploy
 
 before_script:
-  - cd dev/docs
-  - bundle install
-  - cd ../../
-
+  - echo "Stage executing.."
 
 test:pages:
   stage: test
   script:
   - cd dev/docs
+  - bundle install
   - bundle exec jekyll build -d ./../../test
-  - cd ../../
-
-
 
 test:node:
   stage: test
   script:
-  - cd dev/docs
-  - bundle exec jekyll build -d ./../../test
-  - cd ../../
   - npm install
-  - npm -g install mocha mochawesome nyc
+  - npm -g install mocha mochawesome
   - bash test.sh
 
   artifacts:
     paths:
-    - dev          # preserve dev for pages
-    - node_modules # preserve node_modules for test_coverage
-
-
+    - dev/docs/tests          # preserve dev for pages
 
 test:coverage:
   stage: test
   script:
     - npm install
-    - npm -g install mocha mochawesome nyc
+    - npm -g install mocha nyc
     - nyc mocha ./modules/currencies/tests/*.js --timeout=20000
   coverage: '/^Statements\s+:\s(\d+(?:\.\d+)?%)/'
+
+
 
 pages:
   stage: deploy
   script:
   - cd dev/docs
+  - bundle install
   - bundle exec jekyll build -d ./../../public
   - cd ../../
   - cp www public/ -r
