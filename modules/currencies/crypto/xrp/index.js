@@ -11,20 +11,39 @@ class Ripple extends Currency {
             server: 'wss://s2.ripple.com:443',
             // server: 'ws://' + CONFIG.currencies.xrp.core_host + ':' + CONFIG.currencies.xrp.core_port
         });
-        this._bootstrap(cb)
+        this._bootstrap(cb);
+        this.lastReconnect = 0;
+    }
+
+    lowHealth(status) {
+        if (status === 0 && (new Date()) - this.lastReconnect > 1000 * 30) {
+            this.connect();
+            this.lastReconnect = new Date();
+        }
+    }
+
+    connect() {
+
+        this.api.disconnect().then(() => {
+            console.log("[XRP] Disconnected..");
+            this.api.connect().then(() => {
+                console.log("[XRP] Connected..");
+                //Subscribe
+                this.api.connection._ws.send(JSON.stringify({
+                    "id": 2,
+                    "command": "subscribe",
+                    "streams": [
+                        "transactions",
+                        // "ledger",
+                        // "accounts"
+                    ]
+                }));
+            });
+        }).catch(console.error);
     }
 
     listenForIncomingTX() {
-        //Subscribe
-        this.api.connection._ws.send(JSON.stringify({
-            "id": 2,
-            "command": "subscribe",
-            "streams": [
-                "transactions",
-                // "ledger",
-                // "accounts"
-            ]
-        }));
+        this.connect();
 
         //on new received.
         this.api.connection.on('transaction', (t) => {
