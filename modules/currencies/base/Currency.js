@@ -44,14 +44,19 @@ class Currency {
         }, this.HEALTH_CHECK_INTERVAL)
     }
 
+    lowHealth() {
+
+    }
     updateHealth() {
         let status = 0;
         let average = (_.meanBy(this.healthStore.history));
-        if (average === 0)
+        if (average === 0) {
             status = 0;
-        else if (average < 0.5)
+            this.lowHealth(status);
+        } else if (average < 0.5) {
             status = 50;
-        else
+            this.lowHealth(status);
+        } else
             status = 100;
 
         this.healthStore.status = status;
@@ -71,7 +76,7 @@ class Currency {
     getFee(transaction) {
         if (transaction.fee)
             return transaction.fee;
-        return this.CurrencyConfig.fees[0];
+        return this.CurrencyConfig.fees[transaction.route || 0];
     }
 
     _syncWatchAddressList() {

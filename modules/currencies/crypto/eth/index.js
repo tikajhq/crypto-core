@@ -10,7 +10,7 @@ class ETH extends Currency {
     constructor(options, cb) {
         super("eth", options);
         this.primaryWallet = CONFIG.getDefaultWallet(this.notation);
-        this.web3 = (new Web3("ws://10.8.0.6:8546"));
+        this.web3 = (new Web3("ws://" + this.CurrencyConfig.core_host + ":" + this.CurrencyConfig.core_port));
         this.api = this.web3.eth;
 
         this._bootstrap(cb);
@@ -113,6 +113,9 @@ class ETH extends Currency {
                 this.logTx("error", txID, err);
                 cb && cb(err.message);
             } else {
+                this.api.getTransaction(hash).then((tx) => {
+                    this.waitForConfirmation(this.normalizeTX(tx), tx);
+                }).catch(console.log);
                 this.logTx("debug", txID, hash);
                 cb && cb(null, {txid: hash});
             }
@@ -120,49 +123,52 @@ class ETH extends Currency {
     }
 
     transfer(transaction, cb) {
+        this.api.getTransactionCount(transaction.source.address)
+            .then((txCount) => {
+                let txID = this.getTransactionID();
 
-        let txID = this.getTransactionID();
+                // console.log(txID);
+                this.logTx("info", txID, transaction);
 
-        // console.log(txID);
-        this.logTx("info", txID, transaction);
+                let api = this.api;
 
-        let api = this.api;
+                let value = transaction.value * WEI;
+                // console.log(value);
+                let payment = {
+                    nonce: this.web3.utils.toHex(txCount),
+                    gasPrice: this.web3.utils.toHex(20000000000),
+                    gasLimit: this.web3.utils.toHex(this.getFee(transaction) * WEI),
+                    to: transaction.destination,
+                    value: this.web3.utils.toHex(value),
+                    data: '0xc0de'
+                };
 
-        let value = transaction.value * WEI;
-        // console.log(value);
-        let payment = {
-            nonce: this.web3.utils.toHex(0),
-            gasPrice: this.web3.utils.toHex(20000000000),
-            gasLimit: this.web3.utils.toHex(this.getFee(transaction) * WEI),
-            to: transaction.destination,
-            value: this.web3.utils.toHex(value),
-            data: '0xc0de'
-        };
+                const tx = new EthereumTx(payment);
+                this.logTx("debug", txID, payment);
 
-        const tx = new EthereumTx(payment);
-        this.logTx("debug", txID, payment);
-
-        //sign the transaction.
-        const privateKey = util.toBuffer(transaction.source.secret);
-        tx.sign(privateKey);
-        const serializedTx = '0x' + tx.serialize().toString('hex');
+                //sign the transaction.
+                const privateKey = util.toBuffer(transaction.source.secret);
+                tx.sign(privateKey);
+                const serializedTx = '0x' + tx.serialize().toString('hex');
 
 
-        // console.log(serializedTx);
-        // cb(null,serializedTx);
-        return this.submitRawTransaction(txID, serializedTx, cb)
-        // return api.preparePayment(transaction.source.address, payment, instructions).then(prepared => {
-        //     // Sign the transaction with user's key.
-        //     const {signedTransaction} = api.sign(prepared.txJSON, );
-        //
-        //     this.logTx("debug", txID, 'Payment transaction signed, submitting it.');
-        //
-        //     //submit the transaction.
-        //     return this.submitRawTransaction(txID, signedTransaction, cb);
-        // }).catch((err) => {
-        //     this.logTx("error", txID, err);
-        //     cb(err, null);
-        // });
+                // console.log(serializedTx);
+                // cb(null,serializedTx);
+                return this.submitRawTransaction(txID, serializedTx, cb)
+                // return api.preparePayment(transaction.source.address, payment, instructions).then(prepared => {
+                //     // Sign the transaction with user's key.
+                //     const {signedTransaction} = api.sign(prepared.txJSON, );
+                //
+                //     this.logTx("debug", txID, 'Payment transaction signed, submitting it.');
+                //
+                //     //submit the transaction.
+                //     return this.submitRawTransaction(txID, signedTransaction, cb);
+                // }).catch((err) => {
+                //     this.logTx("error", txID, err);
+                //     cb(err, null);
+                // });
+            }).catch(cb);
+
     }
 }
 
