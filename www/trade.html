@@ -1,0 +1,283 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"/>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+
+<link href="//cdn.datatables.net/responsive/2.2.1/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" language="javascript"
+        src="//cdn.datatables.net/responsive/2.2.1/js/dataTables.responsive.min.js"></script>
+
+<style>
+    table.currency {
+        background: rgba(255, 255, 255, 1);
+        border-collapse: collapse;
+        box-shadow: 0 0 15px #ccc !important;
+    }
+
+    table.currency tr {
+        cursor: pointer;
+    }
+
+    table.currency tr.selected {
+        background: rgba(0, 255, 0, 0.13);
+    }
+
+    table.currency th {
+        color: #999;
+        font-weight: bold;
+    }
+
+    table.currency td, table.currency th {
+        padding: 5px;
+        border: 1px solid #f0f0f0;
+        text-align: left;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    table.currency th, tr td:first-child {
+        padding: 5px;
+        color: white;
+        background: #0036a3 !important;
+        border: 1px solid #f0f0f0;
+        text-align: left;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    .dataTables_scroll {
+        box-shadow: 0 0 10px #ccc !important;
+    }
+
+    .dataTables_filter, .dataTables_info, .dataTables_scrollBody thead {
+        display: none;
+    }
+</style>
+
+<table id="table" class="table table-bordered currency" style="width:100%">
+    <thead>
+    <tr>
+        <th>Crypto Pair</th>
+        <th>Name</th>
+        <th>Ex-BTC</th>
+        <th>Ex-INR</th>
+        <th>Ex-USD</th>
+        <th>1h</th>
+        <th>24h</th>
+        <th>7d</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+<div id="chart_container"></div>
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+
+        function createChart(d) {
+            console.log(d);
+            jQuery.getJSON('https://portal.blockage.io/auth/currency_history?currency=' + d.currency + '&exchange=inr',
+                function (data) {
+                    var chartData = data.sort(function (a, b) {
+                        a = new Date(a['_id']);
+                        b = new Date(b["_id"]);
+                        return a > b ? 1 : a < b ? -1 : 0;
+                    }).map(function (d) {
+                        return [new Date(d['_id']).getTime(), d['rate']];
+                    });
+
+                    Highcharts.chart('chart_container', {
+                        credits: {
+                            enabled: false
+                        },
+                        chart: {
+                            zoomType: 'x'
+                        },
+                        title: {
+                            text: d.symbol + '(' + d.name + ') to INR exchange rate over time'
+                        },
+                        subtitle: {
+                            text: document.ontouchstart === undefined ?
+                                'Click and drag in the plot area to zoom in' : 'Pinch the chart to zoom in'
+                        },
+                        xAxis: {
+                            type: 'datetime'
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'Exchange rate'
+                            }
+                        },
+                        legend: {
+                            enabled: false
+                        },
+                        plotOptions: {
+                            area: {
+                                fillColor: {
+                                    linearGradient: {
+                                        x1: 0,
+                                        y1: 0,
+                                        x2: 0,
+                                        y2: 1
+                                    },
+                                    stops: [
+                                        [0, Highcharts.getOptions().colors[0]],
+                                        [1, Highcharts.Color(Highcharts.getOptions().colors[0]).setOpacity(0).get('rgba')]
+                                    ]
+                                },
+                                marker: {
+                                    radius: 2
+                                },
+                                lineWidth: 1,
+                                states: {
+                                    hover: {
+                                        lineWidth: 1
+                                    }
+                                },
+                                threshold: null
+                            }
+                        },
+
+                        series: [{
+                            type: 'area',
+                            name: d.symbol + ' to INR',
+                            data: chartData
+                        }]
+                    });
+                });
+        }
+
+
+        var snapshot = {};
+
+        function arrowed(data) {
+            return Math.abs(data) + "% " + getColoredTrend(data, 0);
+        }
+
+        function getColor(data, old) {
+            if (old === data || data === 0)
+                return "black";
+            return data < old ? "red" : "green";
+        }
+
+        function getColoredTrend(data, old) {
+            var action = "up";
+            if (data === old)
+                action = null;
+            else if (data < old)
+                action = "down";
+            return "<i class='fa fa-arrow-circle-" + action + "' style='color:" + getColor(data, old) + ";'></i>";
+        }
+
+        function getCurrencyAccurate(price) {
+            return Number(price).toFixed(8).replace(/\.?0+$/, "")
+        }
+
+
+        function currency(notation) {
+            return function (data, type, row, meta) {
+                if (typeof snapshot[row['currency']] === 'undefined')
+                    snapshot[row['currency']] = {};
+                if (typeof snapshot[row['currency']][notation] === 'undefined')
+                    snapshot[row['currency']][notation] = data;
+
+                //get old data & update it.
+                var oldData = snapshot[row['currency']][notation];
+                snapshot[row['currency']][notation] = data;
+
+                return "<i class='fa fa-" + notation + "'></i> <span style='color:" + getColor(data, oldData) + ";'>" + getCurrencyAccurate(data) + "</span> " + getColoredTrend(data, oldData);
+            }
+        }
+
+        var tableJquery = jQuery('#table');
+        var table = tableJquery.DataTable({
+//'deferRender': false,
+//"scrollX": true,
+            'ajax': {
+                "url": "https://portal.blockage.io/auth/currencies",
+                "dataSrc": function (json) {
+                    var return_data = new Array();
+                    Object.keys(json).forEach(function (key) {
+                        return_data.push(json[key]);
+                    });
+                    return return_data;
+                }
+            },
+            responsive: true,
+            "columns": [
+                {
+                    'data': 'symbol',
+                    responsivePriority: 1,
+                    render: function (data) {
+                        return data + "/BTC";
+                    }
+                },
+                {
+                    'data': 'name',
+                    responsivePriority: 10,
+                },
+                {
+                    responsivePriority: 9,
+                    'data': 'rates.tik',
+                    render: currency("btc")
+                },
+                {
+                    responsivePriority: 8,
+                    'data': 'rates.inr',
+                    render: currency("inr")
+                },
+                {
+                    'data': 'rates.usd',
+                    responsivePriority: 7,
+                    render: currency("usd")
+                },
+                {
+                    'data': 'changes.h1',
+                    responsivePriority: 11,
+                    render: arrowed
+                },
+                {
+                    'data': 'changes.h24',
+                    responsivePriority: 12,
+                    render: arrowed
+                },
+                {
+                    'data': 'changes.d7',
+                    responsivePriority: 13,
+                    render: arrowed
+                },
+            ],
+            "bPaginate": false,
+            searching: false,
+            paging: false,
+            "initComplete": function (settings, json) {
+                //click on first row after init
+                tableJquery.find('tbody tr:first').click();
+            }
+        });
+
+
+        setInterval(function () {
+            table.ajax.reload();
+            // console.log(snapshot);
+        }, 10000);
+
+
+        tableJquery.on('click', 'tr', function () {
+            var tr = jQuery(this).closest('tr');
+            var row = table.row(tr);
+            if (row.child.isShown()) {
+
+            } else {
+                createChart(row.data());
+                tableJquery.find("tr.selected").removeClass("selected");
+                tr.addClass('shown').addClass("selected");
+            }
+        });
+
+    });
+</script>

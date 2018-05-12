@@ -1,0 +1,249 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+<style>
+
+    @media screen and (max-width: 600px) {
+        #btc_calc {
+            visibility: hidden;
+            clear: both;
+            float: left;
+            margin: 10px auto 5px 20px;
+            width: 28%;
+            display: none;
+        }
+    }
+
+    #btc_calc select, #btc_calc input, #btc_calc a {
+        display: inline-block;
+    }
+
+    #btc_calc select, #btc_calc input {
+        font-weight: 700;
+        font-size: 20px;
+    }
+
+    .btn-swap {
+        background-color: #ffd600;
+        color: #252525;
+        height: 60px;
+        line-height: 50px;
+        font-weight: 700;
+        font-size: 20px;
+
+    }
+
+    .exchange_calculator #btc_calc input.currency1valu {
+        border: 1px solid #ffd600 !important;
+        padding: 10px 15px;
+        background: #252525;
+        color: #fff;
+        height: 50px;
+        border-radius: 5px;
+        outline: 0;
+        font-family: 'Montserrat';
+        text-transform: uppercase;
+        width: 100px;
+        text-align: center;
+        margin-right: 15px;
+        font-weight: bold;
+    }
+
+    .exchange_calculator #btc_calc {
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #252525;
+    }
+
+    .exchange_calculator #btc_calc input.currency2value {
+        border: 1px solid #ffd600 !important;
+        padding: 10px 15px;
+        background: #252525;
+        color: #fff;
+        height: 50px;
+        border-radius: 5px;
+        outline: 0;
+        font-family: 'Montserrat';
+        text-transform: uppercase;
+        text-align: center;
+        width: 150px;
+        margin-left: 15px;
+        font-weight: bold;
+    }
+
+    .exchange_calculator #btc_calc select.currency_switcher {
+        border: 1px solid #ffd600 !important;
+        padding: 10px 15px;
+        background: #252525;
+        color: #fff;
+        height: 50px;
+        border-radius: 5px;
+        outline: 0;
+        font-family: 'Montserrat';
+        text-transform: uppercase;
+        margin-left: 15px;
+        width: 100px;
+        text-align-last: center;
+        font-weight: bold;
+    }
+
+    .exchange_calculator a,
+    .exchange_calculator h2 {
+        display: none;
+    }
+
+    /*page exchange*/
+    .exchange-calculator-top #btc_calc input.currency1value {
+        border: 1px solid #ffd600 !important;
+        padding: 10px 15px;
+        background: #fff;
+        color: #252525;
+        height: 60px;
+        border-radius: 5px;
+        outline: 0;
+        font-family: 'Montserrat';
+        text-transform: uppercase;
+        width: 150px;
+        text-align: center;
+        margin-right: 15px;
+        font-weight: bold;
+    }
+
+    .exchange-calculator-top #btc_calc {
+        font-weight: bold;
+        text-transform: uppercase;
+        color: #252525;
+        text-align: center;
+        font-size: 18px;
+        background: rgba(0, 0, 0, .1);
+        padding: 20px;
+        width: fit-content;
+        width: -moz-fit-content;
+        width: -ms-fit-content;
+        margin: 0 auto;
+    }
+
+    .exchange-calculator-top #btc_calc input.currency2value {
+        border: 1px solid #ffd600 !important;
+        padding: 10px 15px;
+        background: #fff;
+        color: #252525;
+        height: 60px;
+        border-radius: 5px;
+        outline: 0;
+        font-family: 'Montserrat';
+        text-transform: uppercase;
+        text-align: center;
+        width: 250px;
+        margin-left: 15px;
+        font-weight: bold;
+    }
+
+    .exchange-calculator-top #btc_calc select.currency_switcher {
+        border: 1px solid #ffd600 !important;
+        padding: 10px 15px;
+        background: #fff;
+        color: #252525;
+        height: 60px;
+        border-radius: 5px;
+        outline: 0;
+        font-family: 'Montserrat';
+        text-transform: uppercase;
+        margin-left: 15px;
+        width: 150px;
+        text-align-last: center;
+        font-weight: bold;
+    }
+
+    .exchange-calculator-top a,
+    .exchange-calculator-top h2 {
+        display: none;
+    }
+
+    .exchange-calculator-top .cp-table.cp-prices-table {
+        display: none;
+    }
+
+    .exchange-calculator-top .select2-container {
+        height: 60px;
+        vertical-align: top;
+    }
+
+    .exchange-calculator-top .select2-selection.select2-selection--single {
+        height: 60px !important;
+        border: 1px solid #ffd600 !important;
+        outline: 0;
+        background: #fff;
+    }
+
+    .exchange-calculator-top .select2.select2-container .select2-selection .select2-selection__arrow:before {
+        line-height: 60px !important;
+    }
+
+    .exchange-calculator-top .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #252525;
+        line-height: 60px;
+    }
+
+    .exchange-calculator-top .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 60px;
+    }
+
+    .select2-results {
+        text-transform: uppercase;
+        font-weight: bold;
+    }
+
+
+</style>
+<div class='exchange-calculator-top'>
+    <form id="btc_calc" class="cp-form">
+        <input type="text" class="currency2value" value="1" style="width:150px;"/>
+
+        <select class="currency_switcher" id="drp_currencies_list"></select>
+
+        <b style="color:white;"> = </b>
+        <input type="text" class="currency1value" value="1"/>
+        <select class="currency_switcher">
+            <option>BTC</option>
+        </select>
+
+        <a style="overflow:inherit;line-height:34px;height:37px;" class="button btn-swap"
+           href="https://portal.blockage.io/Auth/registration">SWAP</a>
+    </form>
+</div>
+<script type="text/javascript">
+    jQuery(document).ready(function () {
+        jQuery.get("https://portal.blockage.io/auth/currency_rates", function (data) {
+            var list = jQuery("#drp_currencies_list");
+            data = JSON.parse(data);
+            Object.keys(data).forEach(function (currency) {
+                console.log(data[currency]);
+                if (currency == "btc") return;
+                list.append(jQuery("<option></option>")
+                    .attr("value", data[currency]['tik'])
+                    .text(currency.toUpperCase()));
+            });
+            setCalculatorValue2btc_calc();
+        });
+
+        function setCalculatorValuebtc_calc() {
+            var currency1valueold = jQuery("#btc_calc .currency1value").val();
+            var currency2valueunit = jQuery("#drp_currencies_list").val();
+            jQuery("#btc_calc .currency2value").val(currency1valueold / currency2valueunit);
+        }
+
+        function setCalculatorValue2btc_calc() {
+            var currency2valueold = jQuery("#btc_calc .currency2value").val();
+            var currency2valueunit = jQuery("#drp_currencies_list").val();
+            jQuery("#btc_calc .currency1value").val(currency2valueold * currency2valueunit);
+        }
+
+        jQuery("#btc_calc .currency1value").keyup(setCalculatorValuebtc_calc);
+        jQuery("#btc_calc .currency_switcher").change(setCalculatorValuebtc_calc);
+        jQuery("#btc_calc .currency2value").keyup(setCalculatorValue2btc_calc);
+        jQuery("#btc_calc select").select2();
+    });
+</script>
