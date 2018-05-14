@@ -2,7 +2,7 @@ const INSIGHTAPI = require("./INSIGHTAPI");
 
 class HTTPMONA extends INSIGHTAPI {
     constructor(currency) {
-        super(currency, "https://mona.chainsight.info/api/");
+        super(currency, "https://mona.insight.monaco-ex.org/insight-api-monacoin/");
     }
 }
 

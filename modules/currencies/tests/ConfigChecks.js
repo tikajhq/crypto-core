@@ -63,6 +63,10 @@ after((done) => {
     fs.writeFile(path.resolve(__dirname + "/../../../dev/docs/_documentation/5_currencies.md"), output, function (err) {
         if (err) {
             console.log(err);
+        } else {
+            console.log("=======================");
+            console.log("Currencies.md updated.");
+            console.log("=======================");
         }
         done();
     });

@@ -20,7 +20,7 @@ class BlockCypher extends HTTPAPI {
             if (err || response.error)
                 return cb(err);
 
-            cb(null, parseFloat(response.final_balance) / CONFIG.SATOSHIS,)
+            cb(null, parseFloat(response.final_balance) / CONFIG.SATOSHIS)
         });
     }
 
