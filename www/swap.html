@@ -5,7 +5,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
 <style>
 
-    @media screen and (max-width: 600px) {
+    @media screen and (max-width: 800px) {
         #btc_calc {
             visibility: hidden;
             clear: both;
@@ -26,7 +26,7 @@
     }
 
     .btn-swap {
-        background-color: #ffd600;
+        background-color: #0984ff;
         color: #252525;
         height: 60px;
         line-height: 50px;
@@ -36,7 +36,7 @@
     }
 
     .exchange_calculator #btc_calc input.currency1valu {
-        border: 1px solid #ffd600 !important;
+        border: 1px solid #0984ff !important;
         padding: 10px 15px;
         background: #252525;
         color: #fff;
@@ -58,7 +58,7 @@
     }
 
     .exchange_calculator #btc_calc input.currency2value {
-        border: 1px solid #ffd600 !important;
+        border: 1px solid #0984ff !important;
         padding: 10px 15px;
         background: #252525;
         color: #fff;
@@ -74,7 +74,7 @@
     }
 
     .exchange_calculator #btc_calc select.currency_switcher {
-        border: 1px solid #ffd600 !important;
+        border: 1px solid #0984ff !important;
         padding: 10px 15px;
         background: #252525;
         color: #fff;
@@ -96,7 +96,7 @@
 
     /*page exchange*/
     .exchange-calculator-top #btc_calc input.currency1value {
-        border: 1px solid #ffd600 !important;
+        border: 1px solid #0984ff !important;
         padding: 10px 15px;
         background: #fff;
         color: #252525;
@@ -126,7 +126,7 @@
     }
 
     .exchange-calculator-top #btc_calc input.currency2value {
-        border: 1px solid #ffd600 !important;
+        border: 1px solid #0984ff !important;
         padding: 10px 15px;
         background: #fff;
         color: #252525;
@@ -142,7 +142,7 @@
     }
 
     .exchange-calculator-top #btc_calc select.currency_switcher {
-        border: 1px solid #ffd600 !important;
+        border: 1px solid #0984ff !important;
         padding: 10px 15px;
         background: #fff;
         color: #252525;
@@ -169,22 +169,23 @@
     .exchange-calculator-top .select2-container {
         height: 60px;
         vertical-align: top;
+        line-height: 54px;
     }
 
     .exchange-calculator-top .select2-selection.select2-selection--single {
         height: 60px !important;
-        border: 1px solid #ffd600 !important;
+        border: 1px solid #0984ff !important;
         outline: 0;
         background: #fff;
     }
 
     .exchange-calculator-top .select2.select2-container .select2-selection .select2-selection__arrow:before {
-        line-height: 60px !important;
+        line-height: 54px !important;
     }
 
     .exchange-calculator-top .select2-container--default .select2-selection--single .select2-selection__rendered {
         color: #252525;
-        line-height: 60px;
+        line-height: 54px;
     }
 
     .exchange-calculator-top .select2-container--default .select2-selection--single .select2-selection__arrow {
@@ -210,7 +211,8 @@
             <option>BTC</option>
         </select>
 
-        <a style="overflow:inherit;line-height:34px;height:37px;" class="button btn-swap"
+        <a style="overflow:inherit;line-height:34px;height:37px;background: rgb(51, 142, 211);color: white;"
+           class="button btn-swap"
            href="https://portal.blockage.io/Auth/registration">SWAP</a>
     </form>
 </div>

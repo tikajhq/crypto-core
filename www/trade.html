@@ -18,13 +18,11 @@
         box-shadow: 0 0 15px #ccc !important;
     }
 
-    table.currency tr {
+    table.currency td.clickable {
         cursor: pointer;
     }
 
-    table.currency tr.selected {
-        background: rgba(0, 255, 0, 0.13);
-    }
+
 
     table.currency th {
         color: #999;
@@ -39,14 +37,22 @@
         white-space: nowrap;
     }
 
-    table.currency th, tr td:first-child {
+    table.currency th {
         padding: 5px;
         color: white;
-        background: #0036a3 !important;
+        background: #82b9ed !important;
         border: 1px solid #f0f0f0;
         text-align: left;
         font-size: 14px;
         white-space: nowrap;
+    }
+
+    table.currency tr td:first-child {
+        background: #f8f8f8;
+    }
+
+    table.currency tr.selected, table.currency tr.selected td:first-child {
+        background: rgba(0, 255, 0, 0.13);
     }
 
     .dataTables_scroll {
@@ -78,16 +84,19 @@
 <script type="text/javascript">
     jQuery(document).ready(function () {
 
-        function createChart(d) {
-            console.log(d);
-            jQuery.getJSON('https://portal.blockage.io/auth/currency_history?currency=' + d.currency + '&exchange=inr',
+        function createChart(d, to) {
+            if (!to)
+                return;
+            jQuery.getJSON('https://portal.blockage.io/auth/currency_history?currency=' + d.currency + '&exchange=' + to,
                 function (data) {
                     var chartData = data.sort(function (a, b) {
-                        a = new Date(a['_id']);
-                        b = new Date(b["_id"]);
+                        // a = new Date(a['_id']);
+                        // b = new Date(b["_id"]);
+                        a = +a["_id"];
+                        b = +b["_id"];
                         return a > b ? 1 : a < b ? -1 : 0;
                     }).map(function (d) {
-                        return [new Date(d['_id']).getTime(), d['rate']];
+                        return [d["_id"] * 1000, d['rate']];
                     });
 
                     Highcharts.chart('chart_container', {
@@ -98,7 +107,7 @@
                             zoomType: 'x'
                         },
                         title: {
-                            text: d.symbol + '(' + d.name + ') to INR exchange rate over time'
+                            text: d.symbol + ' (' + d.name + ') to ' + to.toUpperCase() + ' exchange rate over time'
                         },
                         subtitle: {
                             text: document.ontouchstart === undefined ?
@@ -144,7 +153,7 @@
 
                         series: [{
                             type: 'area',
-                            name: d.symbol + ' to INR',
+                            name: d.symbol + ' to ' + to.toUpperCase(),
                             data: chartData
                         }]
                     });
@@ -221,19 +230,22 @@
                     responsivePriority: 10,
                 },
                 {
-                    responsivePriority: 9,
+                    responsivePriority: 8,
                     'data': 'rates.tik',
-                    render: currency("btc")
+                    render: currency("btc"),
+                    "sClass": "clickable"
                 },
                 {
-                    responsivePriority: 8,
+                    responsivePriority: 7,
                     'data': 'rates.inr',
-                    render: currency("inr")
+                    render: currency("inr"),
+                    "sClass": "clickable"
                 },
                 {
                     'data': 'rates.usd',
-                    responsivePriority: 7,
-                    render: currency("usd")
+                    responsivePriority: 9,
+                    render: currency("usd"),
+                    "sClass": "clickable"
                 },
                 {
                     'data': 'changes.h1',
@@ -256,7 +268,7 @@
             paging: false,
             "initComplete": function (settings, json) {
                 //click on first row after init
-                tableJquery.find('tbody tr:first').click();
+                tableJquery.find('tbody tr:first td.clickable').click();
             }
         });
 
@@ -267,15 +279,15 @@
         }, 10000);
 
 
-        tableJquery.on('click', 'tr', function () {
+        tableJquery.on('click', 'td', function () {
             var tr = jQuery(this).closest('tr');
             var row = table.row(tr);
             if (row.child.isShown()) {
 
             } else {
-                createChart(row.data());
-                tableJquery.find("tr.selected").removeClass("selected");
-                tr.addClass('shown').addClass("selected");
+                createChart(row.data(), ['btc', 'inr', 'usd'][table.cell(this).index().column - 2]);
+                tableJquery.find("tr.selected");
+                tr.addClass('shown');
             }
         });
 
