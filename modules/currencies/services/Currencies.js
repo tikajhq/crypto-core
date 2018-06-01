@@ -32,7 +32,7 @@ let Currencies = {
 
             currency.on("incoming_tx", (tx, rawtx) => {
                 // logger.info(tx);
-                // logger.info(rawtx);
+                //logger.info(rawtx);
                 // AutoTransact.processTX(currency,tx);
                 // ExternalCallbacks.onNewTx(tx, rawtx,"incoming")
             });

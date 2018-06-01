@@ -9,7 +9,7 @@ class RPCService extends EventEmitter {
     constructor(config, cb) {
         super();
         this.RPC_RAWTX_USE_JSON = 1;
-        this.MIN_CONFIRMATION_COUNT = config.minConfirmations || 6;
+        this.MIN_CONFIRMATION_COUNT = config.minConfirmations || 2;
         this.CONFIRMATION_REFRESH_INTERVAL = config.confirmationRefreshInterval || 1000 * 60;
 
         this.currency = config.currency;
