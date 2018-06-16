@@ -31,6 +31,7 @@ test:node:
   artifacts:
     paths:
     - dev/docs/tests          # preserve dev for pages
+    - dev/docs/_documentation # preserve currencies exchange rates
 
 test:coverage:
   stage: test
