@@ -1,13 +1,60 @@
-Copyright (C) TIKAJ Pvt. Ltd., 2017-2018 <license@tikaj.com>
-All rights reserved.
+CryptoCore Non-Commercial License
 
-DO NOT REDISTRIBUTE, MODIFY or REWRITE
+Copyright (C) 2024 TIKAJ Technologies Pvt. Ltd. <license@tikaj.com>
 
-The software MAY NOT be rewritten or refactored by removing the
-use of LOOP or by the introduction of ITERATE or similar iteration
-macros with or without prior written permission. Redistribution
-and use in source and binary forms, with or without modification,
-are not permitted without prior written permission from the author.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "CryptoCore"), to deal
+in the CryptoCore without restriction for NON-COMMERCIAL purposes only, including
+without limitation the rights to use, copy, modify, merge, publish, distribute,
+and sublicense copies of the CryptoCore, and to permit persons to whom the
+CryptoCore is furnished to do so, subject to the following conditions:
+
+TERMS AND CONDITIONS:
+
+1. NON-COMMERCIAL USE ONLY
+   - This license permits use of CryptoCore for personal, educational, research,
+     and non-commercial purposes only.
+   - Commercial use, including but not limited to using CryptoCore in a business,
+     charging fees for services using CryptoCore, or incorporating CryptoCore
+     into commercial products, requires a separate commercial license.
+
+2. ATTRIBUTION
+   - The above copyright notice and this permission notice shall be included in
+     all copies or substantial portions of the CryptoCore.
+   - Any derivative works must clearly indicate they are based on CryptoCore.
+
+3. NO WARRANTY
+   - THE CRYPTOCORE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+     IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+     FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+
+4. LIMITATION OF LIABILITY
+   - IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+     DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR
+     OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH CRYPTOCORE OR THE
+     USE OR OTHER DEALINGS IN THE CRYPTOCORE.
+
+5. COMMERCIAL LICENSE
+   - For commercial use, please contact license@tikaj.com to obtain a commercial
+     license with different terms and conditions.
+
+6. TERMINATION
+   - This license automatically terminates if you violate any of its terms.
+   - Upon termination, you must cease all use and destroy all copies of CryptoCore.
+
+7. GOVERNING LAW
+   - This license shall be governed by and construed in accordance with the laws
+     of India, without regard to its conflict of law provisions.
+
+For commercial licensing inquiries, please contact:
+Email: license@tikaj.com
+Website: https://tikaj.com
+
+DEFINITIONS:
+- "Commercial use" means any use of CryptoCore that generates revenue, is used
+  in a business context, or provides commercial services to third parties.
+- "Non-commercial use" means use for personal, educational, academic research,
+  or other purposes that do not generate revenue or commercial benefit.
 
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS

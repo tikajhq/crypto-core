@@ -1,0 +1,94 @@
+version: '3.8'
+
+services:
+  crypto-core:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - MONGODB_URI=mongodb://mongo:27017/cryptocore
+    depends_on:
+      - mongo
+    restart: unless-stopped
+    volumes:
+      - ./configs:/app/configs
+      - ./logs:/app/logs
+    networks:
+      - crypto-network
+
+  mongo:
+    image: mongo:5.0
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=cryptocore
+    volumes:
+      - mongo_data:/data/db
+      - ./dev/scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    restart: unless-stopped
+    networks:
+      - crypto-network
+
+  # Bitcoin Core (optional)
+  bitcoin:
+    image: ruimarinho/bitcoin-core:latest
+    ports:
+      - "8332:8332"
+      - "8333:8333"
+    volumes:
+      - bitcoin_data:/home/bitcoin/.bitcoin
+    command: |
+      bitcoind
+      -printtoconsole
+      -regtest=1
+      -rpcallowip=0.0.0.0/0
+      -rpcbind=0.0.0.0
+      -rpcuser=bitcoin
+      -rpcpassword=[REDACTED]
+      -fallbackfee=0.0002
+    restart: unless-stopped
+    networks:
+      - crypto-network
+
+  # Ethereum (optional)
+  ethereum:
+    image: ethereum/client-go:latest
+    ports:
+      - "8545:8545"
+      - "30303:30303"
+    volumes:
+      - ethereum_data:/root/.ethereum
+    command: |
+      geth
+      --dev
+      --http
+      --http.addr=0.0.0.0
+      --http.api=eth,net,web3,personal
+      --http.corsdomain="*"
+      --allow-insecure-unlock
+    restart: unless-stopped
+    networks:
+      - crypto-network
+
+  # Redis for caching (optional)
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - crypto-network
+
+volumes:
+  mongo_data:
+  bitcoin_data:
+  ethereum_data:
+  redis_data:
+
+networks:
+  crypto-network:
+    driver: bridge

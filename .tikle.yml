@@ -1,9 +1,0 @@
-- deploy:
-    source/ : true
-    targets :
-      - "root@c1.tik.co:/var/cal/node/"
-    include :
-      - dev
-    exclude:
-      - "dev/docs"
-      - "documentation"

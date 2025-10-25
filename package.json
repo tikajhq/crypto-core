@@ -1,14 +1,48 @@
 {
-  "name": "tikcc-node",
+  "name": "crypto-core",
   "version": "1.0.0",
-  "description": "",
+  "description": "Universal cryptocurrency transaction server supporting 11+ major cryptocurrencies with real-time monitoring and WebSocket API",
   "main": "server.js",
+  "keywords": [
+    "cryptocurrency",
+    "bitcoin",
+    "ethereum",
+    "blockchain",
+    "wallet",
+    "transaction",
+    "api",
+    "websocket",
+    "multi-currency",
+    "crypto",
+    "fintech"
+  ],
+  "homepage": "https://github.com/tikajhq/crypto-core",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tikajhq/crypto-core.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tikajhq/crypto-core/issues"
+  },
   "scripts": {
+    "start": "node server.js",
+    "dev": "NODE_ENV=development node server.js",
     "test": "mocha \"./modules/**/tests/*.js\"",
-    "start": "node server.js"
+    "test:coverage": "nyc mocha \"./modules/**/tests/*.js\"",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "docs": "apidoc -i modules/currencies/routes/ -o docs/api/",
+    "docker:build": "docker build -t crypto-core .",
+    "docker:run": "docker-compose up -d",
+    "docker:stop": "docker-compose down",
+    "setup": "node dev/scripts/setup_admin.py"
+  },
+  "engines": {
+    "node": ">=14.0.0",
+    "npm": ">=6.0.0"
   },
   "author": "Madhurendra Sachan <madhurendra@tikaj.com>",
-  "license": "ISC",
+  "license": "SEE LICENSE IN LICENSE",
   "dependencies": {
     "amqplib": "^0.5.2",
     "bitcoin-core": "^2.0.0",

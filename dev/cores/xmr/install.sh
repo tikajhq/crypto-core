@@ -11,4 +11,4 @@ cd ..
 
 
 #  start service
-#pm2 start ./xmr/monerod -- --rpc-bind-ip=0.0.0.0 --confirm-external-bind --rpc-login=xmr:s3cur3
+#pm2 start ./xmr/monerod -- --rpc-bind-ip=0.0.0.0 --confirm-external-bind --rpc-login=xmr:[REDACTED]

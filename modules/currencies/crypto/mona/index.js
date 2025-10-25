@@ -13,7 +13,7 @@ class MONA extends Currency {
             rpcConfig: {
                 protocol: 'http',
                 user: this.notation,
-                pass: 's3cur3',
+                pass: '[REDACTED]',
                 host: this.CurrencyConfig.core_host,
                 port: this.CurrencyConfig.core_port,
             }

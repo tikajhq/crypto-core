@@ -5,7 +5,7 @@ def print_box(message):
     print(message)
     print('='*20)
 
-cl = Client('mq.c1.tik.co', 'themadhurendra', 's3cur3r@b')
+cl = Client('.co', '', '')
 
 # cl.is_alive()
 vhost ="crypto"
@@ -19,11 +19,11 @@ print([i['name'] for i in cl.get_all_vhosts()])
 
 print_box("Create users ...")
 for user in [
-    {"username":"crypto.c0","password":"zmarTHERy3gmtJyZ"},
-    {"username":"crypto.c1","password":"dDehDfVctnKXgG7B"},
-    {"username":"crypto.c2","password":"nWkN39AgCtm5VTcF"},
-    {"username":"crypto.c3","password":"xcN3Av2JJHRUKRXx"},
-    {"username":"crypto.c4","password":"4dgQBWUXbPdQgjVM"}
+    {"username":"crypto.c0","password":"[REDACTED]"},
+    {"username":"crypto.c1","password":"[REDACTED]"},
+    {"username":"crypto.c2","password":"[REDACTED]"},
+    {"username":"crypto.c3","password":"[REDACTED]"},
+    {"username":"crypto.c4","password":"[REDACTED]"}
 ]:
 
     username = user['username']

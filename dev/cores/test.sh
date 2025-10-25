@@ -17,7 +17,7 @@ print_message(){
 
 test_blockchain(){
     USERNAME="$1"
-    PASSWORD="s3cur3"
+    PASSWORD="[REDACTED]"
     PORT="$2"
     CURRENCY="$3"
     print_message "$CURRENCY"
